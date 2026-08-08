@@ -1,0 +1,20 @@
+{
+  "name": "kabucast",
+  "version": "0.0.0",
+  "description": "Probabilistic turnip price predictor for Animal Crossing: New Horizons",
+  "license": "MIT",
+  "author": "joyboyisalive07-lab",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"tests/**/*.test.ts\""
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.9.0"
+  }
+}
