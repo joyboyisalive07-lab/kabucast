@@ -322,3 +322,29 @@ with the Sunday price unknown:
 The path counts were then set from that budget rather than the other way round:
 2000 to fit and 4000 to value. This leaves room for a machine several times
 slower than the one measured, which is the point of the exercise.
+
+### D-021 The README argues from specifics, not adjectives
+
+Two instructions have to be reconciled. The first said no adjective lists and
+badges limited to CI and licence. The second asked for a page that draws people
+in and states the advantages plainly. Both are satisfiable at once, because what
+actually persuades here is concrete and checkable:
+
+- The lead example is the input `100.88.84.80.76.72.71`. A fall from 72 to 71 is
+  a rate step of 0.01 where the generator's smallest is 0.03, and no pattern
+  reaches 71 any other way, so no week can produce it. kabucast says the input
+  is inconsistent. Turnip Prophet reports 65.7 percent decreasing, 31.4 percent
+  large spike, 2.88 percent small spike, with no indication that it widened the
+  data to get there. Both are reproducible from a URL, so the reader can check
+  in ten seconds rather than take anyone's word.
+- The calibration curve from a million simulated weeks, printed as numbers.
+- The selling decision, which the existing tool does not compute at all.
+- What the two tools agree on. On every reachable input tested they match to the
+  three significant figures Turnip Prophet displays, including the per-scenario
+  breakdown. Saying so costs nothing and is the reason the one disagreement is
+  worth reading.
+
+No screenshot will be staged or drawn by hand; the images are of the interface
+actually running, and the calibration plot is generated from the simulation
+output committed alongside it. An attractive page that overstates would fail the
+same honesty rule as an overconfident probability.

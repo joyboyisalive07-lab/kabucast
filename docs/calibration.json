@@ -1,0 +1,2885 @@
+{
+  "weeks": 1000000,
+  "seed": "20260811",
+  "depths": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    10
+  ],
+  "calibrationBins": 20,
+  "nearCertainThreshold": 0.99,
+  "inconsistentInputs": 0,
+  "previousPatternKnown": [
+    {
+      "depth": 1,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.6945899381111904,
+      "brier": 0.3056416368235839,
+      "topChoiceAccuracy": 0.783209,
+      "uniquePatternShare": 0.105003,
+      "nearCertainShare": 0.107415,
+      "nearCertainAccuracy": 1,
+      "survivingPatternShares": [
+        0,
+        0.105003,
+        0.470621,
+        0.371848,
+        0.052528
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 1948524,
+          "meanPredicted": 0.0059708102514531335,
+          "observedFrequency": 0.00593012967764318,
+          "standardError": 0.000055003163794028825
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 433827,
+          "meanPredicted": 0.07365856482500184,
+          "observedFrequency": 0.07382666362397915,
+          "standardError": 0.00039700362224459265
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 52413,
+          "meanPredicted": 0.1266326077819725,
+          "observedFrequency": 0.1268769198481293,
+          "standardError": 0.0014538163156491985
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 122106,
+          "meanPredicted": 0.18484248880528273,
+          "observedFrequency": 0.18510146921527199,
+          "standardError": 0.0011114455670442355
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 77796,
+          "meanPredicted": 0.20464387921550173,
+          "observedFrequency": 0.20695151421666924,
+          "standardError": 0.0014524645467452438
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 32851,
+          "meanPredicted": 0.28724222186494874,
+          "observedFrequency": 0.28994551155215975,
+          "standardError": 0.0025033970520447167
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 164020,
+          "meanPredicted": 0.3127530076764142,
+          "observedFrequency": 0.3130837702719181,
+          "standardError": 0.001145074550639657
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 101165,
+          "meanPredicted": 0.36289389658241406,
+          "observedFrequency": 0.36520535758414474,
+          "standardError": 0.0015138054116223857
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 68835,
+          "meanPredicted": 0.44888629472150443,
+          "observedFrequency": 0.4455872739158858,
+          "standardError": 0.0018944289695452332
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 2331,
+          "meanPredicted": 0.4855002831695177,
+          "observedFrequency": 0.4950664950664951,
+          "standardError": 0.010355658627370694
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 4338,
+          "meanPredicted": 0.5259393019832554,
+          "observedFrequency": 0.5027662517289073,
+          "standardError": 0.007591342461742529
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 91898,
+          "meanPredicted": 0.5596856987607208,
+          "observedFrequency": 0.5625693703889094,
+          "standardError": 0.0016364005109492717
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 248504,
+          "meanPredicted": 0.6163774470303818,
+          "observedFrequency": 0.6152577020893024,
+          "standardError": 0.0009759932295547179
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 5065,
+          "meanPredicted": 0.6768077067427415,
+          "observedFrequency": 0.6746298124383021,
+          "standardError": 0.006583122226145873
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 79149,
+          "meanPredicted": 0.7286380750418072,
+          "observedFrequency": 0.7281456493449064,
+          "standardError": 0.0015814466923247718
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 76068,
+          "meanPredicted": 0.7959423528428438,
+          "observedFrequency": 0.7934348214755219,
+          "standardError": 0.0014678550984412024
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 58332,
+          "meanPredicted": 0.813663460481361,
+          "observedFrequency": 0.8146129054378386,
+          "standardError": 0.0016090219123109579
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 106668,
+          "meanPredicted": 0.8655554360464741,
+          "observedFrequency": 0.8660329245884426,
+          "standardError": 0.0010429156001025123
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 114417,
+          "meanPredicted": 0.931882569922682,
+          "observedFrequency": 0.9304910983507696,
+          "standardError": 0.0007518497266680656
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 211693,
+          "meanPredicted": 0.9771711654802516,
+          "observedFrequency": 0.9772547982219535,
+          "standardError": 0.0003240377096938783
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.7456757628270476,
+      "brier": 0.25453638953802205,
+      "topChoiceAccuracy": 0.81992,
+      "uniquePatternShare": 0.207914,
+      "nearCertainShare": 0.220798,
+      "nearCertainAccuracy": 0.9997780776999792,
+      "survivingPatternShares": [
+        0,
+        0.207914,
+        0.402401,
+        0.389685,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2026973,
+          "meanPredicted": 0.003416988182158012,
+          "observedFrequency": 0.003400637304986302,
+          "standardError": 0.00004088994044603194
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 433057,
+          "meanPredicted": 0.06765691596974736,
+          "observedFrequency": 0.0678732822700014,
+          "standardError": 0.0003822208487490813
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 119354,
+          "meanPredicted": 0.12225590326926712,
+          "observedFrequency": 0.12204031704006568,
+          "standardError": 0.0009474808934082583
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 74598,
+          "meanPredicted": 0.16474516961997404,
+          "observedFrequency": 0.16520550148797555,
+          "standardError": 0.0013596854492294028
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 72856,
+          "meanPredicted": 0.2326729688462032,
+          "observedFrequency": 0.23494290106511476,
+          "standardError": 0.0015707078940600254
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 8062,
+          "meanPredicted": 0.27274930655081164,
+          "observedFrequency": 0.275489952865294,
+          "standardError": 0.00497569431876643
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 157074,
+          "meanPredicted": 0.34384712192010525,
+          "observedFrequency": 0.3446146402332658,
+          "standardError": 0.0011991211909170823
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 101873,
+          "meanPredicted": 0.39767535459980374,
+          "observedFrequency": 0.39936980357896595,
+          "standardError": 0.0015344814606183099
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 4230,
+          "meanPredicted": 0.42529884481861885,
+          "observedFrequency": 0.4078014184397163,
+          "standardError": 0.007555928919339223
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 4087,
+          "meanPredicted": 0.47791284994419647,
+          "observedFrequency": 0.4891118179593834,
+          "standardError": 0.007819242597971593
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 6521,
+          "meanPredicted": 0.5308103721124966,
+          "observedFrequency": 0.5183254102131575,
+          "standardError": 0.006187582721273741
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 247889,
+          "meanPredicted": 0.583416099603544,
+          "observedFrequency": 0.5828334456147711,
+          "standardError": 0.0009903719836292248
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 3870,
+          "meanPredicted": 0.6247839193719693,
+          "observedFrequency": 0.6214470284237726,
+          "standardError": 0.007796683507593482
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 8086,
+          "meanPredicted": 0.680772775251309,
+          "observedFrequency": 0.6780855800148404,
+          "standardError": 0.005195718358827438
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 9288,
+          "meanPredicted": 0.7296240159932976,
+          "observedFrequency": 0.7288975021533161,
+          "standardError": 0.004612526636361315
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 133303,
+          "meanPredicted": 0.7658136599630069,
+          "observedFrequency": 0.7644614149719061,
+          "standardError": 0.0011622213633775231
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 74947,
+          "meanPredicted": 0.8452908967478034,
+          "observedFrequency": 0.8464381496257355,
+          "standardError": 0.0013169283777161374
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 43855,
+          "meanPredicted": 0.8590045028689896,
+          "observedFrequency": 0.8579181393227682,
+          "standardError": 0.0016671807438037524
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 214923,
+          "meanPredicted": 0.9296338915118292,
+          "observedFrequency": 0.9291746346365908,
+          "standardError": 0.0005533521956844354
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 255154,
+          "meanPredicted": 0.9946021198716344,
+          "observedFrequency": 0.9945483903838466,
+          "standardError": 0.0001457720103984313
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.8228245678194875,
+      "brier": 0.17723852058118753,
+      "topChoiceAccuracy": 0.861851,
+      "uniquePatternShare": 0.524224,
+      "nearCertainShare": 0.561857,
+      "nearCertainAccuracy": 0.9998042206468906,
+      "survivingPatternShares": [
+        0,
+        0.524224,
+        0.132545,
+        0.343231,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2395770,
+          "meanPredicted": 0.0025141411878671304,
+          "observedFrequency": 0.0025031618227125308,
+          "standardError": 0.00003228328097274378
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 219896,
+          "meanPredicted": 0.06234015583065308,
+          "observedFrequency": 0.062329464837923385,
+          "standardError": 0.0005155409516760851
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 130498,
+          "meanPredicted": 0.13435970186541146,
+          "observedFrequency": 0.1348143266563472,
+          "standardError": 0.000945411226746124
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 5392,
+          "meanPredicted": 0.1732746960982489,
+          "observedFrequency": 0.17117952522255192,
+          "standardError": 0.005129572856172621
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 5377,
+          "meanPredicted": 0.22428371272535158,
+          "observedFrequency": 0.22856611493397805,
+          "standardError": 0.005726447198304091
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 4211,
+          "meanPredicted": 0.2753365735162951,
+          "observedFrequency": 0.2787936357159819,
+          "standardError": 0.006910008510890285
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 7282,
+          "meanPredicted": 0.3176996194670501,
+          "observedFrequency": 0.3257346882724526,
+          "standardError": 0.005491893118078032
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 137621,
+          "meanPredicted": 0.38707871979607955,
+          "observedFrequency": 0.38741907121732877,
+          "standardError": 0.001313196991737476
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 91396,
+          "meanPredicted": 0.4425034465774151,
+          "observedFrequency": 0.4439253359009147,
+          "standardError": 0.0016434554108360148
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 4948,
+          "meanPredicted": 0.47737727913289185,
+          "observedFrequency": 0.4783751010509297,
+          "standardError": 0.007101475528207991
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 99073,
+          "meanPredicted": 0.5282034106943851,
+          "observedFrequency": 0.5262987897812724,
+          "standardError": 0.0015863199126536754
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 127733,
+          "meanPredicted": 0.5553361208861214,
+          "observedFrequency": 0.5552754573994191,
+          "standardError": 0.0013904271252365378
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 4230,
+          "meanPredicted": 0.6257308938602272,
+          "observedFrequency": 0.6304964539007092,
+          "standardError": 0.007421307823790011
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 6315,
+          "meanPredicted": 0.6845079412759477,
+          "observedFrequency": 0.6737925574030087,
+          "standardError": 0.005899610773845141
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 4626,
+          "meanPredicted": 0.7271598816632688,
+          "observedFrequency": 0.7235192390834414,
+          "standardError": 0.006575892209960312
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 66530,
+          "meanPredicted": 0.7931786891918762,
+          "observedFrequency": 0.7912670975499775,
+          "standardError": 0.0015756082565464291
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 60085,
+          "meanPredicted": 0.8295070576010779,
+          "observedFrequency": 0.8311558625280853,
+          "standardError": 0.0015282739006172875
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 5968,
+          "meanPredicted": 0.8771423340349163,
+          "observedFrequency": 0.8793565683646113,
+          "standardError": 0.00421618772678482
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 24011,
+          "meanPredicted": 0.9154324233143757,
+          "observedFrequency": 0.9151638832201907,
+          "standardError": 0.0017981863762882647
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 599038,
+          "meanPredicted": 0.9976346467004701,
+          "observedFrequency": 0.9976095005659074,
+          "standardError": 0.00006309536026397643
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.846789812414532,
+      "brier": 0.15322433096132443,
+      "topChoiceAccuracy": 0.873225,
+      "uniquePatternShare": 0.623355,
+      "nearCertainShare": 0.629648,
+      "nearCertainAccuracy": 0.9999650598429599,
+      "survivingPatternShares": [
+        0,
+        0.623355,
+        0.072581,
+        0.304064,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2470352,
+          "meanPredicted": 0.0019163501706465568,
+          "observedFrequency": 0.001911468487082003,
+          "standardError": 0.000027790008771176422
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 197890,
+          "meanPredicted": 0.056736154447639076,
+          "observedFrequency": 0.056637525898226286,
+          "standardError": 0.0005196124052474775
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 68392,
+          "meanPredicted": 0.11886974092128434,
+          "observedFrequency": 0.12048192771084337,
+          "standardError": 0.001244745846106357
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 50406,
+          "meanPredicted": 0.15766884576496612,
+          "observedFrequency": 0.15698527953021466,
+          "standardError": 0.0016203391555814246
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 3151,
+          "meanPredicted": 0.2225710451264689,
+          "observedFrequency": 0.2167565852110441,
+          "standardError": 0.007340241093730372
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 2539,
+          "meanPredicted": 0.2720598665435051,
+          "observedFrequency": 0.28515163450177233,
+          "standardError": 0.008960114231594467
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 5235,
+          "meanPredicted": 0.31559793134454783,
+          "observedFrequency": 0.31155682903533904,
+          "standardError": 0.006400948642038166
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 3348,
+          "meanPredicted": 0.3775431920580245,
+          "observedFrequency": 0.3652927120669056,
+          "standardError": 0.00832174726078811
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 120074,
+          "meanPredicted": 0.4411817609339954,
+          "observedFrequency": 0.4421440111930976,
+          "standardError": 0.0014332383955257097
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 164679,
+          "meanPredicted": 0.4867601068848016,
+          "observedFrequency": 0.48652226452674596,
+          "standardError": 0.0012316662974031314
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 112536,
+          "meanPredicted": 0.506060256911165,
+          "observedFrequency": 0.5053049690765622,
+          "standardError": 0.0014903896340597632
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 2032,
+          "meanPredicted": 0.5763163074128982,
+          "observedFrequency": 0.5698818897637795,
+          "standardError": 0.01098308742527625
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 2172,
+          "meanPredicted": 0.6253467884909698,
+          "observedFrequency": 0.6413443830570903,
+          "standardError": 0.010290928378724895
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 4766,
+          "meanPredicted": 0.6859193067342776,
+          "observedFrequency": 0.6949223667645824,
+          "standardError": 0.006669546584582336
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 2700,
+          "meanPredicted": 0.7272115774927965,
+          "observedFrequency": 0.7044444444444444,
+          "standardError": 0.008781345318677131
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 6698,
+          "meanPredicted": 0.7804744060821878,
+          "observedFrequency": 0.7884443117348462,
+          "standardError": 0.004990284365179849
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 105205,
+          "meanPredicted": 0.8185673318117147,
+          "observedFrequency": 0.8181170096478304,
+          "standardError": 0.0011892839659329193
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 4440,
+          "meanPredicted": 0.8765535181756079,
+          "observedFrequency": 0.8702702702702703,
+          "standardError": 0.005042609589897065
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 20629,
+          "meanPredicted": 0.912874739591784,
+          "observedFrequency": 0.9140045566920355,
+          "standardError": 0.00195196853319909
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 652756,
+          "meanPredicted": 0.9984418039295277,
+          "observedFrequency": 0.9984527143373634,
+          "standardError": 0.00004864896054925149
+        }
+      ]
+    },
+    {
+      "depth": 5,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.8740563206002051,
+      "brier": 0.1259178623518339,
+      "topChoiceAccuracy": 0.899638,
+      "uniquePatternShare": 0.680673,
+      "nearCertainShare": 0.686117,
+      "nearCertainAccuracy": 0.9999708504526196,
+      "survivingPatternShares": [
+        0,
+        0.680673,
+        0.05416,
+        0.265167,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2693615,
+          "meanPredicted": 0.003793738356441278,
+          "observedFrequency": 0.00380269637643093,
+          "standardError": 0.00003750168188020002
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 86639,
+          "meanPredicted": 0.08853002656912357,
+          "observedFrequency": 0.08865522455245328,
+          "standardError": 0.0009656879354410843
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 4089,
+          "meanPredicted": 0.12023931435275034,
+          "observedFrequency": 0.11689899730985572,
+          "standardError": 0.005024606162841227
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 39280,
+          "meanPredicted": 0.1965319202500058,
+          "observedFrequency": 0.1949847250509165,
+          "standardError": 0.001999017592525756
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 1046,
+          "meanPredicted": 0.2248188273095904,
+          "observedFrequency": 0.2179732313575526,
+          "standardError": 0.01276575627372138
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 921,
+          "meanPredicted": 0.2738037762961711,
+          "observedFrequency": 0.28555917480998916,
+          "standardError": 0.014883373335267309
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 3316,
+          "meanPredicted": 0.3104347434342023,
+          "observedFrequency": 0.30790108564535584,
+          "standardError": 0.008016456368571968
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 3139,
+          "meanPredicted": 0.38467228239357143,
+          "observedFrequency": 0.38228735266008285,
+          "standardError": 0.008673463476048648
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 168196,
+          "meanPredicted": 0.4269612882350061,
+          "observedFrequency": 0.4261278508406859,
+          "standardError": 0.001205784515378022
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 3891,
+          "meanPredicted": 0.48471146254199426,
+          "observedFrequency": 0.4906193780519147,
+          "standardError": 0.008014251055298276
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 98382,
+          "meanPredicted": 0.5141011562842459,
+          "observedFrequency": 0.5149620865605496,
+          "standardError": 0.0015933737124158816
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 68576,
+          "meanPredicted": 0.5704122763866077,
+          "observedFrequency": 0.5709286047596827,
+          "standardError": 0.0018900339612689069
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 508,
+          "meanPredicted": 0.6281535957130284,
+          "observedFrequency": 0.65748031496063,
+          "standardError": 0.021054856660072105
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 3182,
+          "meanPredicted": 0.6907851578900587,
+          "observedFrequency": 0.6942174732872407,
+          "standardError": 0.008167779692213823
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 1942,
+          "meanPredicted": 0.7316871671550135,
+          "observedFrequency": 0.717816683831102,
+          "standardError": 0.010212870563745213
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 36948,
+          "meanPredicted": 0.764650958710232,
+          "observedFrequency": 0.7669968604525279,
+          "standardError": 0.0021992885443827544
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 2914,
+          "meanPredicted": 0.8294044709002126,
+          "observedFrequency": 0.8291008922443377,
+          "standardError": 0.006973146913245592
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 57347,
+          "meanPredicted": 0.8667109427075456,
+          "observedFrequency": 0.8671595724275027,
+          "standardError": 0.0014172918569960056
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 18350,
+          "meanPredicted": 0.9114584289659388,
+          "observedFrequency": 0.9098637602179837,
+          "standardError": 0.002114072455379109
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 707719,
+          "meanPredicted": 0.9986242807317585,
+          "observedFrequency": 0.9985785318749391,
+          "standardError": 0.00004478465652027687
+        }
+      ]
+    },
+    {
+      "depth": 6,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.9026665299291118,
+      "brier": 0.09725665617291424,
+      "topChoiceAccuracy": 0.930335,
+      "uniquePatternShare": 0.732691,
+      "nearCertainShare": 0.734182,
+      "nearCertainAccuracy": 0.9999959138197341,
+      "survivingPatternShares": [
+        0,
+        0.732691,
+        0.041123,
+        0.226186,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2745411,
+          "meanPredicted": 0.0026388016832156603,
+          "observedFrequency": 0.0026298430362521313,
+          "standardError": 0.000030909317381695224
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 76892,
+          "meanPredicted": 0.07028764075064142,
+          "observedFrequency": 0.070267388024762,
+          "standardError": 0.0009217546961524227
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 2116,
+          "meanPredicted": 0.12022730036939858,
+          "observedFrequency": 0.11956521739130435,
+          "standardError": 0.007053313590075283
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 848,
+          "meanPredicted": 0.17426067469122952,
+          "observedFrequency": 0.16391509433962265,
+          "standardError": 0.01271266899793307
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 604,
+          "meanPredicted": 0.22753124341458214,
+          "observedFrequency": 0.22847682119205298,
+          "standardError": 0.017083509503911787
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 27887,
+          "meanPredicted": 0.2704047700155981,
+          "observedFrequency": 0.2676515939326568,
+          "standardError": 0.0026512024293319073
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 68578,
+          "meanPredicted": 0.31917143558062994,
+          "observedFrequency": 0.3186298813030418,
+          "standardError": 0.0017792721668989048
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 77446,
+          "meanPredicted": 0.35066515415411126,
+          "observedFrequency": 0.34997288433230894,
+          "standardError": 0.001713891951078905
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 224,
+          "meanPredicted": 0.4229610732474303,
+          "observedFrequency": 0.42410714285714285,
+          "standardError": 0.03302057490594568
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 232,
+          "meanPredicted": 0.4783110694710675,
+          "observedFrequency": 0.45689655172413796,
+          "standardError": 0.03270440315886051
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 471,
+          "meanPredicted": 0.5272865694295268,
+          "observedFrequency": 0.5605095541401274,
+          "standardError": 0.022869452913346223
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 3004,
+          "meanPredicted": 0.5860752262709743,
+          "observedFrequency": 0.5935419440745673,
+          "standardError": 0.008961559880526408
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 82585,
+          "meanPredicted": 0.6135648446943462,
+          "observedFrequency": 0.6144093963794878,
+          "standardError": 0.0016937197780882846
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 87883,
+          "meanPredicted": 0.6755210583059169,
+          "observedFrequency": 0.6767406665680507,
+          "standardError": 0.001577735643699413
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 133,
+          "meanPredicted": 0.7264342871570271,
+          "observedFrequency": 0.7443609022556391,
+          "standardError": 0.037825057280349614
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 256,
+          "meanPredicted": 0.7798454525158803,
+          "observedFrequency": 0.73046875,
+          "standardError": 0.027732268777308236
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 682,
+          "meanPredicted": 0.827768398035245,
+          "observedFrequency": 0.8152492668621701,
+          "standardError": 0.014860934032784764
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 3890,
+          "meanPredicted": 0.8842435617387132,
+          "observedFrequency": 0.8817480719794345,
+          "standardError": 0.005177279052817369
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 68111,
+          "meanPredicted": 0.9074680908424613,
+          "observedFrequency": 0.9074745635800384,
+          "standardError": 0.0011102970173260702
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 752747,
+          "meanPredicted": 0.9988255688920477,
+          "observedFrequency": 0.99885353246177,
+          "standardError": 0.00003900383130676076
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.9940149143567677,
+      "brier": 0.005967135754119131,
+      "topChoiceAccuracy": 0.99652,
+      "uniquePatternShare": 0.960285,
+      "nearCertainShare": 0.960777,
+      "nearCertainAccuracy": 1,
+      "survivingPatternShares": [
+        0,
+        0.960285,
+        0.039715,
+        0,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2979074,
+          "meanPredicted": 0.00029444332854291735,
+          "observedFrequency": 0.0002863305846044778,
+          "standardError": 0.000009802368831623714
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 16336,
+          "meanPredicted": 0.09043024493997626,
+          "observedFrequency": 0.09182174338883448,
+          "standardError": 0.0022593600991555256
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 1161,
+          "meanPredicted": 0.11896546229125378,
+          "observedFrequency": 0.10680447889750215,
+          "standardError": 0.009064667766094749
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 385,
+          "meanPredicted": 0.17410421277757174,
+          "observedFrequency": 0.16363636363636364,
+          "standardError": 0.018854156876198135
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 126,
+          "meanPredicted": 0.21504249425553534,
+          "observedFrequency": 0.19047619047619047,
+          "standardError": 0.03498242317583109
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 99,
+          "meanPredicted": 0.2697244580539892,
+          "observedFrequency": 0.31313131313131315,
+          "standardError": 0.04661036580726
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 2546,
+          "meanPredicted": 0.30591585723065,
+          "observedFrequency": 0.3036135113904163,
+          "standardError": 0.00911289813657561
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 91,
+          "meanPredicted": 0.3711788405588363,
+          "observedFrequency": 0.37362637362637363,
+          "standardError": 0.05071247397940529
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 96,
+          "meanPredicted": 0.4231945719590247,
+          "observedFrequency": 0.4375,
+          "standardError": 0.05063078670631141
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 86,
+          "meanPredicted": 0.47537104077864784,
+          "observedFrequency": 0.4186046511627907,
+          "standardError": 0.05319717569742023
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 86,
+          "meanPredicted": 0.524628959221352,
+          "observedFrequency": 0.5813953488372093,
+          "standardError": 0.05319717569742023
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 96,
+          "meanPredicted": 0.5768054280409752,
+          "observedFrequency": 0.5625,
+          "standardError": 0.05063078670631141
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 91,
+          "meanPredicted": 0.6288211594411637,
+          "observedFrequency": 0.6263736263736264,
+          "standardError": 0.05071247397940529
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 2546,
+          "meanPredicted": 0.6940841427693254,
+          "observedFrequency": 0.6963864886095836,
+          "standardError": 0.009112898136575611
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 99,
+          "meanPredicted": 0.7302755419460106,
+          "observedFrequency": 0.6868686868686869,
+          "standardError": 0.04661036580726
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 126,
+          "meanPredicted": 0.784957505744464,
+          "observedFrequency": 0.8095238095238095,
+          "standardError": 0.03498242317583109
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 385,
+          "meanPredicted": 0.8258957872224277,
+          "observedFrequency": 0.8363636363636363,
+          "standardError": 0.018854156876198135
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 1161,
+          "meanPredicted": 0.881034537708746,
+          "observedFrequency": 0.8931955211024979,
+          "standardError": 0.009064667766094747
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 16336,
+          "meanPredicted": 0.9095697550597953,
+          "observedFrequency": 0.9081782566111655,
+          "standardError": 0.0022593600991555264
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 979074,
+          "meanPredicted": 0.9991040835886834,
+          "observedFrequency": 0.9991287686119742,
+          "standardError": 0.00002981739715019742
+        }
+      ]
+    },
+    {
+      "depth": 10,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.9999999986851096,
+      "brier": 2.4509672500377696e-12,
+      "topChoiceAccuracy": 1,
+      "uniquePatternShare": 0.999919,
+      "nearCertainShare": 1,
+      "nearCertainAccuracy": 1,
+      "survivingPatternShares": [
+        0,
+        0.999919,
+        0.000081,
+        0,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 3000000,
+          "meanPredicted": 4.3829671536128594e-10,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 1000000,
+          "meanPredicted": 0.9999999986851096,
+          "observedFrequency": 1,
+          "standardError": 0
+        }
+      ]
+    }
+  ],
+  "previousPatternUnknown": [
+    {
+      "depth": 1,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.6538766908549277,
+      "brier": 0.3463983475008675,
+      "topChoiceAccuracy": 0.742955,
+      "uniquePatternShare": 0.105003,
+      "nearCertainShare": 0.107415,
+      "nearCertainAccuracy": 1,
+      "survivingPatternShares": [
+        0,
+        0.105003,
+        0.470621,
+        0.371848,
+        0.052528
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 1670135,
+          "meanPredicted": 0.00034764146472353563,
+          "observedFrequency": 0.0003478760698985411,
+          "standardError": 0.000014429820720758961
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 745523,
+          "meanPredicted": 0.07470814635704391,
+          "observedFrequency": 0.07504396242637719,
+          "standardError": 0.00030513210232144966
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 12003,
+          "meanPredicted": 0.12067547336050745,
+          "observedFrequency": 0.12046988252936766,
+          "standardError": 0.0029711166157256894
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 5099,
+          "meanPredicted": 0.1755849955641229,
+          "observedFrequency": 0.18062365169641106,
+          "standardError": 0.005387490470358395
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 7256,
+          "meanPredicted": 0.2268362458895023,
+          "observedFrequency": 0.22160970231532526,
+          "standardError": 0.004875783969347285
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 7587,
+          "meanPredicted": 0.2842164986987702,
+          "observedFrequency": 0.2890470541716093,
+          "standardError": 0.005204387927818141
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 58423,
+          "meanPredicted": 0.33529901188248873,
+          "observedFrequency": 0.33647707238587543,
+          "standardError": 0.001954851529418846
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 495978,
+          "meanPredicted": 0.353438974754204,
+          "observedFrequency": 0.35375157769094595,
+          "standardError": 0.0006789186424541713
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 3669,
+          "meanPredicted": 0.4595453625826356,
+          "observedFrequency": 0.45925320250749524,
+          "standardError": 0.008227146273889046
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 16769,
+          "meanPredicted": 0.530694837580874,
+          "observedFrequency": 0.5260301747271752,
+          "standardError": 0.003855911816518708
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 400733,
+          "meanPredicted": 0.5901535763789831,
+          "observedFrequency": 0.58963948564256,
+          "standardError": 0.0007770491831784056
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 133505,
+          "meanPredicted": 0.6467355015567379,
+          "observedFrequency": 0.6479158083966893,
+          "standardError": 0.0013071751573810256
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 2537,
+          "meanPredicted": 0.6959050534115802,
+          "observedFrequency": 0.686637761135199,
+          "standardError": 0.009209306746560404
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 2350,
+          "meanPredicted": 0.753162517072094,
+          "observedFrequency": 0.7540425531914894,
+          "standardError": 0.008883702054837687
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 2131,
+          "meanPredicted": 0.8206865861356645,
+          "observedFrequency": 0.8263725950258095,
+          "standardError": 0.00820550596346338
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 328887,
+          "meanPredicted": 0.9017341265926122,
+          "observedFrequency": 0.9006406455712752,
+          "standardError": 0.0005216230788097159
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 107415,
+          "meanPredicted": 0.9999989078868686,
+          "observedFrequency": 1,
+          "standardError": 0
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.7103479709178319,
+      "brier": 0.2899332825800246,
+      "topChoiceAccuracy": 0.780115,
+      "uniquePatternShare": 0.207914,
+      "nearCertainShare": 0.218634,
+      "nearCertainAccuracy": 0.9998033242771024,
+      "survivingPatternShares": [
+        0,
+        0.207914,
+        0.402401,
+        0.389685,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 1843772,
+          "meanPredicted": 0.00022048630227789425,
+          "observedFrequency": 0.00021098053338482198,
+          "standardError": 0.000010696009170486206
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 424867,
+          "meanPredicted": 0.055915407000488346,
+          "observedFrequency": 0.05567860059736341,
+          "standardError": 0.0003517852057197631
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 304589,
+          "meanPredicted": 0.11602420655262118,
+          "observedFrequency": 0.11702983364468185,
+          "standardError": 0.000582457445643548
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 15518,
+          "meanPredicted": 0.17267207230896897,
+          "observedFrequency": 0.17689135197834774,
+          "standardError": 0.003063119987545634
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 10803,
+          "meanPredicted": 0.22410438723977105,
+          "observedFrequency": 0.2233638804035916,
+          "standardError": 0.004007218994127059
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 6657,
+          "meanPredicted": 0.27956928053311997,
+          "observedFrequency": 0.2977317109809223,
+          "standardError": 0.005604344160124238
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 7424,
+          "meanPredicted": 0.33107500116325683,
+          "observedFrequency": 0.3259698275862069,
+          "standardError": 0.005440131387291562
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 381435,
+          "meanPredicted": 0.3884709069172299,
+          "observedFrequency": 0.3889574894805144,
+          "standardError": 0.0007893625377688976
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 3621,
+          "meanPredicted": 0.4253745840402061,
+          "observedFrequency": 0.43220104943385806,
+          "standardError": 0.008232390046146652
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 5936,
+          "meanPredicted": 0.47785982591161313,
+          "observedFrequency": 0.47860512129380056,
+          "standardError": 0.0064837327436149395
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 18958,
+          "meanPredicted": 0.5333626689378719,
+          "observedFrequency": 0.5363434961493828,
+          "standardError": 0.0036217913562652006
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 364199,
+          "meanPredicted": 0.5592419879538237,
+          "observedFrequency": 0.5588593049404309,
+          "standardError": 0.0008227548104777123
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 4052,
+          "meanPredicted": 0.62077597316357,
+          "observedFrequency": 0.6137709772951628,
+          "standardError": 0.007648757790435527
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 4356,
+          "meanPredicted": 0.673461293543613,
+          "observedFrequency": 0.671028466483012,
+          "standardError": 0.007118782042699269
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 4594,
+          "meanPredicted": 0.7215323983822312,
+          "observedFrequency": 0.7015672616456248,
+          "standardError": 0.006750911175906652
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 10089,
+          "meanPredicted": 0.7748439870964619,
+          "observedFrequency": 0.7745068886906532,
+          "standardError": 0.004160592873844657
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 13701,
+          "meanPredicted": 0.8286139003326841,
+          "observedFrequency": 0.8249032917305306,
+          "standardError": 0.0032468660789366907
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 295380,
+          "meanPredicted": 0.8839295178580769,
+          "observedFrequency": 0.88286275306385,
+          "standardError": 0.0005917027131417289
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 48770,
+          "meanPredicted": 0.9193354303190161,
+          "observedFrequency": 0.9197867541521427,
+          "standardError": 0.0012299578905458775
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 231279,
+          "meanPredicted": 0.9982423630090713,
+          "observedFrequency": 0.9983180487636145,
+          "standardError": 0.00008520656571117064
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.7930106056200384,
+      "brier": 0.20698963664839617,
+      "topChoiceAccuracy": 0.8201,
+      "uniquePatternShare": 0.524224,
+      "nearCertainShare": 0.557985,
+      "nearCertainAccuracy": 0.9998548348073873,
+      "survivingPatternShares": [
+        0,
+        0.524224,
+        0.132545,
+        0.343231,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2549993,
+          "meanPredicted": 0.006067876729678435,
+          "observedFrequency": 0.006061193109157555,
+          "standardError": 0.00004860594486764904
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 66285,
+          "meanPredicted": 0.07660999027433923,
+          "observedFrequency": 0.07591461114882704,
+          "standardError": 0.0010287529825700908
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 9415,
+          "meanPredicted": 0.12238654165710916,
+          "observedFrequency": 0.12501327668613915,
+          "standardError": 0.0034085419133984465
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 6042,
+          "meanPredicted": 0.17360256362584991,
+          "observedFrequency": 0.171962926183383,
+          "standardError": 0.004854583146296063
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 4472,
+          "meanPredicted": 0.23170560345939248,
+          "observedFrequency": 0.23255813953488372,
+          "standardError": 0.006317388957148578
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 4111,
+          "meanPredicted": 0.2763030174530569,
+          "observedFrequency": 0.2770615422038433,
+          "standardError": 0.006980154723908948
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 5203,
+          "meanPredicted": 0.3226588024676865,
+          "observedFrequency": 0.3261579857774361,
+          "standardError": 0.006499293329185068
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 6691,
+          "meanPredicted": 0.37580123768764234,
+          "observedFrequency": 0.37259004633089227,
+          "standardError": 0.005910793833340277
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 346457,
+          "meanPredicted": 0.4324842636219129,
+          "observedFrequency": 0.4331590933362582,
+          "standardError": 0.0008418401596940038
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 12252,
+          "meanPredicted": 0.4833842345610083,
+          "observedFrequency": 0.4789422135161606,
+          "standardError": 0.004513162901500636
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 335226,
+          "meanPredicted": 0.5185633699019879,
+          "observedFrequency": 0.518372679923395,
+          "standardError": 0.0008629939713562168
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 6328,
+          "meanPredicted": 0.5795289482123301,
+          "observedFrequency": 0.566055625790139,
+          "standardError": 0.006230363010782283
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 3178,
+          "meanPredicted": 0.6284147126298869,
+          "observedFrequency": 0.6280679672750157,
+          "standardError": 0.008573500301093632
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 4167,
+          "meanPredicted": 0.6788348051153076,
+          "observedFrequency": 0.6774658027357812,
+          "standardError": 0.007241354731593727
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 3335,
+          "meanPredicted": 0.7237172385400296,
+          "observedFrequency": 0.7238380809595203,
+          "standardError": 0.007742027160984845
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 3704,
+          "meanPredicted": 0.7685370219050587,
+          "observedFrequency": 0.7680885529157667,
+          "standardError": 0.006934757042346489
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 4515,
+          "meanPredicted": 0.827588778863882,
+          "observedFrequency": 0.8349944629014396,
+          "standardError": 0.005524108238699066
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 5384,
+          "meanPredicted": 0.8745912571147546,
+          "observedFrequency": 0.8735141158989599,
+          "standardError": 0.004530054933593835
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 43425,
+          "meanPredicted": 0.9180606586833676,
+          "observedFrequency": 0.9188485895221646,
+          "standardError": 0.0013103885790486608
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 579817,
+          "meanPredicted": 0.9989726406301327,
+          "observedFrequency": 0.9989048268677876,
+          "standardError": 0.00004343681508090909
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.8205970223570173,
+      "brier": 0.17938448489894818,
+      "topChoiceAccuracy": 0.834761,
+      "uniquePatternShare": 0.623355,
+      "nearCertainShare": 0.629242,
+      "nearCertainAccuracy": 0.9999713941536007,
+      "survivingPatternShares": [
+        0,
+        0.623355,
+        0.072581,
+        0.304064,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2612714,
+          "meanPredicted": 0.004703906342830194,
+          "observedFrequency": 0.004716168704266904,
+          "standardError": 0.00004238597759824433
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 55851,
+          "meanPredicted": 0.07847013494720917,
+          "observedFrequency": 0.07665037331471236,
+          "standardError": 0.0011257054000391703
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 7010,
+          "meanPredicted": 0.12040195244391766,
+          "observedFrequency": 0.12853067047075606,
+          "standardError": 0.003997333940672412
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 4577,
+          "meanPredicted": 0.17131096511911242,
+          "observedFrequency": 0.178064234214551,
+          "standardError": 0.005654794557494288
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 3546,
+          "meanPredicted": 0.22373784471772085,
+          "observedFrequency": 0.21432600112803157,
+          "standardError": 0.006891111155937014
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 3251,
+          "meanPredicted": 0.27234962295816867,
+          "observedFrequency": 0.26299600123039063,
+          "standardError": 0.007721488162419961
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 3526,
+          "meanPredicted": 0.32230575903536907,
+          "observedFrequency": 0.3349404424276801,
+          "standardError": 0.007948275469694831
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 4205,
+          "meanPredicted": 0.3795166910175025,
+          "observedFrequency": 0.3797859690844233,
+          "standardError": 0.007484404503098407
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 10335,
+          "meanPredicted": 0.4323518643075956,
+          "observedFrequency": 0.4259313014029995,
+          "standardError": 0.0048640325418107125
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 598760,
+          "meanPredicted": 0.4779732822919667,
+          "observedFrequency": 0.4781364820629301,
+          "standardError": 0.0006455472269050755
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 2005,
+          "meanPredicted": 0.5268903721435155,
+          "observedFrequency": 0.5007481296758105,
+          "standardError": 0.011166378112468588
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 1708,
+          "meanPredicted": 0.5744494488269921,
+          "observedFrequency": 0.5620608899297423,
+          "standardError": 0.012004791342960288
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 2656,
+          "meanPredicted": 0.619955653939316,
+          "observedFrequency": 0.6227409638554217,
+          "standardError": 0.009405015320276695
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 2898,
+          "meanPredicted": 0.6784414327576729,
+          "observedFrequency": 0.6670117322291236,
+          "standardError": 0.00875451340359291
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 2676,
+          "meanPredicted": 0.7269997500121398,
+          "observedFrequency": 0.7417787742899851,
+          "standardError": 0.008460384785931495
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 3020,
+          "meanPredicted": 0.7768894068778273,
+          "observedFrequency": 0.7837748344370861,
+          "standardError": 0.007491095007893454
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 3486,
+          "meanPredicted": 0.8282616483617582,
+          "observedFrequency": 0.821285140562249,
+          "standardError": 0.0064887885669454555
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 4416,
+          "meanPredicted": 0.8785920748143953,
+          "observedFrequency": 0.8727355072463768,
+          "standardError": 0.005015109453904631
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 39800,
+          "meanPredicted": 0.9169049932072586,
+          "observedFrequency": 0.9186934673366834,
+          "standardError": 0.0013699556205406416
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 633560,
+          "meanPredicted": 0.9997894368406759,
+          "observedFrequency": 0.9997679777763747,
+          "standardError": 0.000019134650248447647
+        }
+      ]
+    },
+    {
+      "depth": 5,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.8525580013721138,
+      "brier": 0.14748231868476996,
+      "topChoiceAccuracy": 0.878192,
+      "uniquePatternShare": 0.680673,
+      "nearCertainShare": 0.685869,
+      "nearCertainAccuracy": 0.9999752139256913,
+      "survivingPatternShares": [
+        0,
+        0.680673,
+        0.05416,
+        0.265167,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2675787,
+          "meanPredicted": 0.0035306552599184303,
+          "observedFrequency": 0.003534287295662921,
+          "standardError": 0.00003627908581913081
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 49298,
+          "meanPredicted": 0.08006781044128321,
+          "observedFrequency": 0.08010466956063127,
+          "standardError": 0.0012225974159396867
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 4103,
+          "meanPredicted": 0.12312642873476078,
+          "observedFrequency": 0.12698025834755058,
+          "standardError": 0.005197917437113303
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 1827,
+          "meanPredicted": 0.17041672209752318,
+          "observedFrequency": 0.17733990147783252,
+          "standardError": 0.008936020869345347
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 1618,
+          "meanPredicted": 0.22215451192462843,
+          "observedFrequency": 0.2181705809641533,
+          "standardError": 0.010267503026380607
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 851,
+          "meanPredicted": 0.2772691036082267,
+          "observedFrequency": 0.30317273795534666,
+          "standardError": 0.015755887076728634
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 1485,
+          "meanPredicted": 0.32789282770178124,
+          "observedFrequency": 0.3333333333333333,
+          "standardError": 0.01223293072362623
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 17513,
+          "meanPredicted": 0.3891941992380732,
+          "observedFrequency": 0.3923371209958317,
+          "standardError": 0.0036896126962093338
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 247757,
+          "meanPredicted": 0.402643944877151,
+          "observedFrequency": 0.40219650706135446,
+          "standardError": 0.000985111535440879
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 1301,
+          "meanPredicted": 0.4801270041908404,
+          "observedFrequency": 0.48501152959262106,
+          "standardError": 0.01385594453255347
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 9673,
+          "meanPredicted": 0.5360219590080662,
+          "observedFrequency": 0.5398531996278301,
+          "standardError": 0.005067636426546579
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 254425,
+          "meanPredicted": 0.5603482696336141,
+          "observedFrequency": 0.5604795126265107,
+          "standardError": 0.0009839874092628096
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 440,
+          "meanPredicted": 0.6267377139842949,
+          "observedFrequency": 0.6318181818181818,
+          "standardError": 0.022993278016834158
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 571,
+          "meanPredicted": 0.6747555085222212,
+          "observedFrequency": 0.6672504378283712,
+          "standardError": 0.019719010849242314
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 478,
+          "meanPredicted": 0.7250091027968077,
+          "observedFrequency": 0.6820083682008368,
+          "standardError": 0.021300448553671147
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 997,
+          "meanPredicted": 0.7765598997602656,
+          "observedFrequency": 0.7713139418254764,
+          "standardError": 0.013301109107197291
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 1312,
+          "meanPredicted": 0.8269667283703604,
+          "observedFrequency": 0.8147865853658537,
+          "standardError": 0.01072485024888723
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 2654,
+          "meanPredicted": 0.8777978287705105,
+          "observedFrequency": 0.8756593820648079,
+          "standardError": 0.006405066660457235
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 39090,
+          "meanPredicted": 0.9167327732561514,
+          "observedFrequency": 0.9161166538756715,
+          "standardError": 0.0014021046414642595
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 688820,
+          "meanPredicted": 0.9998622154294042,
+          "observedFrequency": 0.9998461136436224,
+          "standardError": 0.000014945614140129808
+        }
+      ]
+    },
+    {
+      "depth": 6,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.8871100926387757,
+      "brier": 0.11287249195469416,
+      "topChoiceAccuracy": 0.918513,
+      "uniquePatternShare": 0.732691,
+      "nearCertainShare": 0.734125,
+      "nearCertainAccuracy": 0.999995913502469,
+      "survivingPatternShares": [
+        0,
+        0.732691,
+        0.041123,
+        0.226186,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2727621,
+          "meanPredicted": 0.0023553013288567445,
+          "observedFrequency": 0.0023562657715276427,
+          "standardError": 0.00002935674254665853
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 41769,
+          "meanPredicted": 0.08162980005717867,
+          "observedFrequency": 0.08116066939596352,
+          "standardError": 0.0013361818235099175
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 2547,
+          "meanPredicted": 0.1195465855803988,
+          "observedFrequency": 0.11189634864546526,
+          "standardError": 0.006246335582387835
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 993,
+          "meanPredicted": 0.1738027616765592,
+          "observedFrequency": 0.17119838872104734,
+          "standardError": 0.011953649171696673
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 586,
+          "meanPredicted": 0.22346231098769412,
+          "observedFrequency": 0.25597269624573377,
+          "standardError": 0.018027788325676496
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 2721,
+          "meanPredicted": 0.2855404767557592,
+          "observedFrequency": 0.2921719955898567,
+          "standardError": 0.008718040717490268
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 223470,
+          "meanPredicted": 0.3141162988691334,
+          "observedFrequency": 0.31396160558464226,
+          "standardError": 0.0009817544243295206
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 190,
+          "meanPredicted": 0.3717924382281383,
+          "observedFrequency": 0.33157894736842103,
+          "standardError": 0.03415401255847669
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 153,
+          "meanPredicted": 0.4249945493742031,
+          "observedFrequency": 0.43790849673202614,
+          "standardError": 0.04010970619266917
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 182,
+          "meanPredicted": 0.4787375923694342,
+          "observedFrequency": 0.47802197802197804,
+          "standardError": 0.03702664369992173
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 307,
+          "meanPredicted": 0.5329363782540111,
+          "observedFrequency": 0.504885993485342,
+          "standardError": 0.028535144744024243
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 850,
+          "meanPredicted": 0.5812512692892199,
+          "observedFrequency": 0.6082352941176471,
+          "standardError": 0.016743220616021997
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 9806,
+          "meanPredicted": 0.6370156295821366,
+          "observedFrequency": 0.6362431164593106,
+          "standardError": 0.0048581532908771085
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 215174,
+          "meanPredicted": 0.6566354925039182,
+          "observedFrequency": 0.6568637474787846,
+          "standardError": 0.0010234722034961248
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 179,
+          "meanPredicted": 0.7241828014727318,
+          "observedFrequency": 0.6815642458100558,
+          "standardError": 0.034820723990707236
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 205,
+          "meanPredicted": 0.7815042250291617,
+          "observedFrequency": 0.7463414634146341,
+          "standardError": 0.030389013050108916
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 545,
+          "meanPredicted": 0.8265661453463011,
+          "observedFrequency": 0.8036697247706422,
+          "standardError": 0.017015087652208397
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 1573,
+          "meanPredicted": 0.8784459570491626,
+          "observedFrequency": 0.891290527654164,
+          "standardError": 0.00784836112759508
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 36523,
+          "meanPredicted": 0.9159439750785082,
+          "observedFrequency": 0.9159159981381595,
+          "standardError": 0.0014521159219903037
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 734606,
+          "meanPredicted": 0.9999815230007774,
+          "observedFrequency": 0.9999741357952426,
+          "standardError": 0.00000593357878025424
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.9936664161079424,
+      "brier": 0.006323385888614583,
+      "topChoiceAccuracy": 0.996494,
+      "uniquePatternShare": 0.960285,
+      "nearCertainShare": 0.960777,
+      "nearCertainAccuracy": 1,
+      "survivingPatternShares": [
+        0,
+        0.960285,
+        0.039715,
+        0,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 2960873,
+          "meanPredicted": 8.801473424394328e-7,
+          "observedFrequency": 0.0000010132146836422906,
+          "standardError": 5.849794739926364e-7
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 36518,
+          "meanPredicted": 0.08410879789994688,
+          "observedFrequency": 0.08404074702886248,
+          "standardError": 0.0014518760360236577
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 1451,
+          "meanPredicted": 0.12107033304868475,
+          "observedFrequency": 0.12129565816678153,
+          "standardError": 0.008570581865860297
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 569,
+          "meanPredicted": 0.1731457586666285,
+          "observedFrequency": 0.15114235500878734,
+          "standardError": 0.015016004556778172
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 182,
+          "meanPredicted": 0.21984854980731686,
+          "observedFrequency": 0.2032967032967033,
+          "standardError": 0.02983168476760241
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 139,
+          "meanPredicted": 0.2745517245679272,
+          "observedFrequency": 0.302158273381295,
+          "standardError": 0.03894828255174326
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 101,
+          "meanPredicted": 0.3137392762046824,
+          "observedFrequency": 0.3069306930693069,
+          "standardError": 0.04589314350753267
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 73,
+          "meanPredicted": 0.3739340803987157,
+          "observedFrequency": 0.410958904109589,
+          "standardError": 0.05758515829081793
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 40,
+          "meanPredicted": 0.425102759605451,
+          "observedFrequency": 0.35,
+          "standardError": 0.07541551564499178
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 54,
+          "meanPredicted": 0.4697051601868089,
+          "observedFrequency": 0.3333333333333333,
+          "standardError": 0.06415002990995843
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 54,
+          "meanPredicted": 0.530294839813191,
+          "observedFrequency": 0.6666666666666666,
+          "standardError": 0.06415002990995843
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 40,
+          "meanPredicted": 0.574897240394549,
+          "observedFrequency": 0.65,
+          "standardError": 0.07541551564499178
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 73,
+          "meanPredicted": 0.6260659196012843,
+          "observedFrequency": 0.589041095890411,
+          "standardError": 0.05758515829081793
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 101,
+          "meanPredicted": 0.6862607237953178,
+          "observedFrequency": 0.693069306930693,
+          "standardError": 0.04589314350753267
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 139,
+          "meanPredicted": 0.7254482754320726,
+          "observedFrequency": 0.697841726618705,
+          "standardError": 0.03894828255174326
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 182,
+          "meanPredicted": 0.7801514501926831,
+          "observedFrequency": 0.7967032967032966,
+          "standardError": 0.029831684767602413
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 569,
+          "meanPredicted": 0.8268542413333725,
+          "observedFrequency": 0.8488576449912126,
+          "standardError": 0.015016004556778173
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 1451,
+          "meanPredicted": 0.8789296669513165,
+          "observedFrequency": 0.8787043418332184,
+          "standardError": 0.008570581865860299
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 36518,
+          "meanPredicted": 0.9158912020997667,
+          "observedFrequency": 0.9159592529711376,
+          "standardError": 0.0014518760360236573
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 960873,
+          "meanPredicted": 0.9999972878783137,
+          "observedFrequency": 0.999996877839215,
+          "standardError": 0.0000018025775557137338
+        }
+      ]
+    },
+    {
+      "depth": 10,
+      "weeks": 1000000,
+      "meanProbabilityOnTruth": 0.9999999990527619,
+      "brier": 1.1025332194661902e-12,
+      "topChoiceAccuracy": 1,
+      "uniquePatternShare": 0.999919,
+      "nearCertainShare": 1,
+      "nearCertainAccuracy": 1,
+      "survivingPatternShares": [
+        0,
+        0.999919,
+        0.000081,
+        0,
+        0
+      ],
+      "bins": [
+        {
+          "from": 0,
+          "to": 0.05,
+          "count": 3000000,
+          "meanPredicted": 3.1574615680328476e-10,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.05,
+          "to": 0.1,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.1,
+          "to": 0.15,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.15,
+          "to": 0.2,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.2,
+          "to": 0.25,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.25,
+          "to": 0.3,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.3,
+          "to": 0.35,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.35,
+          "to": 0.4,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.4,
+          "to": 0.45,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.45,
+          "to": 0.5,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.5,
+          "to": 0.55,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.55,
+          "to": 0.6,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.6,
+          "to": 0.65,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.65,
+          "to": 0.7,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.7,
+          "to": 0.75,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.75,
+          "to": 0.8,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.8,
+          "to": 0.85,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.85,
+          "to": 0.9,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.9,
+          "to": 0.95,
+          "count": 0,
+          "meanPredicted": 0,
+          "observedFrequency": 0,
+          "standardError": 0
+        },
+        {
+          "from": 0.95,
+          "to": 1,
+          "count": 1000000,
+          "meanPredicted": 0.9999999990527619,
+          "observedFrequency": 1,
+          "standardError": 0
+        }
+      ]
+    }
+  ]
+}

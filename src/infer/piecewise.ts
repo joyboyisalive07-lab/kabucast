@@ -64,7 +64,7 @@ function assertDegree(coefficients: readonly number[]): void {
 }
 
 /** Coefficients of `Q(v) = P(v + delta)`. */
-export function shiftPolynomial(coefficients: readonly number[], delta: number): readonly number[] {
+function shiftPolynomial(coefficients: readonly number[], delta: number): readonly number[] {
   if (delta === 0) {
     return coefficients;
   }
