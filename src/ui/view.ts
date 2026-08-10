@@ -109,7 +109,7 @@ export function renderRecommendation(
     verdict.textContent = sell ? strings.sellNow : strings.hold;
     verdict.dataset["action"] = recommendation.action;
     detail.textContent = fill(sell ? strings.sellNowDetail : strings.holdDetail, {
-      price: bells(recommendation.sellNowPrice),
+      price: bells(recommendation.sellNowPrice, strings.locale),
     });
   }
 
@@ -118,11 +118,11 @@ export function renderRecommendation(
   figures.append(
     statistic(
       strings.expectedIfWaiting,
-      bells(recommendation.expectedBellsIfWaiting),
-      `${strings.plusMinus}${bells(recommendation.expectedBellsStandardError)}`,
+      bells(recommendation.expectedBellsIfWaiting, strings.locale),
+      `${strings.plusMinus}${bells(recommendation.expectedBellsStandardError, strings.locale)}`,
     ),
     statistic(strings.probabilityBetter, percent(recommendation.probabilityBetterByWaiting)),
-    statistic(strings.downside, bells(recommendation.tenthPercentileIfWaiting)),
+    statistic(strings.downside, bells(recommendation.tenthPercentileIfWaiting, strings.locale)),
   );
 
   host.append(verdict, detail, figures);

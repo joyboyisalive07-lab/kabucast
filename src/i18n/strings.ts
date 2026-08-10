@@ -5,6 +5,13 @@
  */
 
 export interface Strings {
+  /** BCP 47 tag, used for grouping separators in figures. */
+  readonly locale: string;
+  readonly languageName: string;
+  readonly languageLabel: string;
+  readonly copyLink: string;
+  readonly copied: string;
+
   readonly tagline: string;
 
   readonly sundayPrice: string;
@@ -19,6 +26,8 @@ export interface Strings {
   readonly clear: string;
 
   readonly dayNames: readonly string[];
+  /** Two or three characters; the chart axis and the day blocks use these. */
+  readonly dayShort: readonly string[];
   readonly morning: string;
   readonly afternoon: string;
 
@@ -64,6 +73,12 @@ export interface Strings {
 }
 
 export const EN: Strings = {
+  locale: "en-US",
+  languageName: "English",
+  languageLabel: "Language",
+  copyLink: "Copy link",
+  copied: "Copied",
+
   tagline: "Turnip prices, as probabilities rather than guesses.",
 
   sundayPrice: "Sunday buy price",
@@ -78,6 +93,7 @@ export const EN: Strings = {
   clear: "Clear",
 
   dayNames: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  dayShort: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   morning: "AM",
   afternoon: "PM",
 

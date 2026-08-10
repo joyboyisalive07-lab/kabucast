@@ -9,8 +9,8 @@
 
 const SMALLEST_SHOWN_PERCENT = 0.1;
 
-export function bells(value: number): string {
-  return Math.round(value).toLocaleString("en-US");
+export function bells(value: number, locale: string): string {
+  return Math.round(value).toLocaleString(locale);
 }
 
 export function percent(fraction: number): string {
@@ -32,9 +32,8 @@ export function slotLabel(slot: number, dayNames: readonly string[], am: string,
   return `${day} ${slot % 2 === 0 ? am : pm}`;
 }
 
-export function shortSlotLabel(slot: number, dayNames: readonly string[]): string {
-  const day = dayNames[Math.floor(slot / 2)] ?? "";
-  return day.slice(0, 2);
+export function shortDayLabel(slot: number, dayShort: readonly string[]): string {
+  return dayShort[Math.floor(slot / 2)] ?? "";
 }
 
 export function fill(template: string, values: Readonly<Record<string, string>>): string {

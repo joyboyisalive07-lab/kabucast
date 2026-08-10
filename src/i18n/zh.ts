@@ -1,0 +1,67 @@
+import type { Strings } from "./strings.ts";
+
+export const ZH: Strings = {
+  locale: "zh-CN",
+  languageName: "简体中文",
+  languageLabel: "语言",
+  copyLink: "复制链接",
+  copied: "已复制",
+
+  tagline: "大头菜价格，用概率说话，而不是靠猜。",
+
+  sundayPrice: "周日买入价",
+  sundayPriceHint: "90 到 110。没有记录就留空。",
+  firstTimeBuyer: "第一次买大头菜的那一周",
+  firstTimeBuyerHint: "第一次时游戏一定给小波动型。",
+  previousPattern: "上周的类型",
+  patternUnknown: "不知道",
+  patternNames: ["波动型", "暴涨型", "递减型", "小波动型"],
+  prices: "卖出价",
+  pricesHint: "有多少填多少。可以整行粘贴。",
+  clear: "清空",
+
+  dayNames: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+  dayShort: ["周一", "周二", "周三", "周四", "周五", "周六"],
+  morning: "上午",
+  afternoon: "下午",
+
+  chartHeading: "价格预测",
+  legendBand90: "90% 区间",
+  legendBand50: "50% 区间",
+  legendMedian: "中位数",
+  legendMinimum: "可能的最低价",
+  legendMaximum: "可能的最高价",
+  legendObserved: "已记录",
+  legendPeak: "最可能的峰值时段",
+  axisNote: "价格采用对数刻度",
+  readoutEmpty: "点击图表查看准确数字",
+
+  recommendationHeading: "决定",
+  sellNow: "现在卖",
+  hold: "再等等",
+  sellNowDetail: "继续等待的价值低于眼前的 {price} 铃钱。",
+  holdDetail: "继续等待的价值高于眼前的 {price} 铃钱。",
+  expectedIfWaiting: "等待的期望值",
+  probabilityBetter: "等待更划算的概率",
+  downside: "坏情况，第 10 百分位",
+  plusMinus: "±",
+  nothingLeft: "这一周结束了，没有什么可决定的了。",
+  nothingEntered: "输入一个价格即可得到结论。",
+
+  patternsHeading: "各类型的概率",
+  patternColumn: "类型",
+  probabilityColumn: "概率",
+  scenariosColumn: "情形",
+
+  scenariosHeading: "仍然可能的情形",
+  scenariosHint: "所有仍与你的输入相符的走势，以及各自的概率。",
+  scenarioPeakAt: "{slot} 达到峰值",
+  scenarioFalls: "{ranges} 下跌",
+  scenarioAllWeek: "整周下跌",
+  scenarioCount: "共 {total} 个中的 {count} 个",
+
+  inconsistentHeading: "这些价格不可能出现",
+  inconsistentBody: "游戏里没有任何类型会产生这个序列，因此无从计算。请检查输入的数字。",
+  invalidPrice: "1 到 999 之间的整数",
+  invalidBasePrice: "90 到 110 之间的整数",
+};

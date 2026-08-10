@@ -135,35 +135,53 @@ export class InputPanel {
     pricesHint.className = "field-hint";
     pricesHint.textContent = this.strings.pricesHint;
 
+    // One box per day, each holding its two half-days. The first version put
+    // all twelve fields in one flat grid and nobody could tell where Tuesday
+    // ended and Wednesday began.
     const grid = document.createElement("div");
-    grid.className = "price-grid";
+    grid.className = "days";
     this.priceInputs.length = 0;
     this.priceErrors.length = 0;
-    for (let slot = 0; slot < SELLING_SLOT_COUNT; slot += 1) {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.inputMode = "numeric";
-      input.autocomplete = "off";
-      input.className = "price-input";
-      input.setAttribute(
-        "aria-label",
-        slotLabel(slot, this.strings.dayNames, this.strings.morning, this.strings.afternoon),
-      );
-      const error = document.createElement("span");
-      error.className = "field-error";
-      this.priceInputs.push(input);
-      this.priceErrors.push(error);
 
-      const cell = document.createElement("div");
-      cell.className = "price-cell";
-      const caption = document.createElement("span");
-      caption.className = "price-caption";
-      caption.textContent =
-        slot % 2 === 0
-          ? `${at(this.strings.dayNames, slot / 2).slice(0, 3)} ${this.strings.morning}`
-          : this.strings.afternoon;
-      cell.append(caption, input, error);
-      grid.append(cell);
+    for (let day = 0; day < this.strings.dayNames.length; day += 1) {
+      const block = document.createElement("div");
+      block.className = "day";
+
+      const name = document.createElement("span");
+      name.className = "day-name";
+      name.textContent = at(this.strings.dayNames, day);
+      block.append(name);
+
+      const fields = document.createElement("div");
+      fields.className = "day-fields";
+
+      for (const half of [0, 1] as const) {
+        const slot = day * 2 + half;
+        const input = document.createElement("input");
+        input.type = "text";
+        input.inputMode = "numeric";
+        input.autocomplete = "off";
+        input.className = "price-input";
+        input.setAttribute(
+          "aria-label",
+          slotLabel(slot, this.strings.dayNames, this.strings.morning, this.strings.afternoon),
+        );
+        const error = document.createElement("span");
+        error.className = "field-error";
+        this.priceInputs.push(input);
+        this.priceErrors.push(error);
+
+        const cell = document.createElement("label");
+        cell.className = "half";
+        const caption = document.createElement("span");
+        caption.className = "half-label";
+        caption.textContent = half === 0 ? this.strings.morning : this.strings.afternoon;
+        cell.append(caption, input, error);
+        fields.append(cell);
+      }
+
+      block.append(fields);
+      grid.append(block);
     }
 
     const clear = document.createElement("button");
@@ -272,12 +290,32 @@ export class InputPanel {
     }
   }
 
+  /**
+   * The raw text rather than the parsed state, so that switching language in
+   * the middle of typing an out-of-range number does not silently discard it.
+   */
+  private readRaw(): readonly string[] {
+    return [this.baseInput.value, ...this.priceInputs.map((input) => input.value)];
+  }
+
+  private writeRaw(values: readonly string[]): void {
+    this.baseInput.value = values[0] ?? "";
+    for (let slot = 0; slot < this.priceInputs.length; slot += 1) {
+      at(this.priceInputs, slot).value = values[slot + 1] ?? "";
+    }
+  }
+
   setStrings(strings: Strings): void {
-    const previous = this.read();
+    const raw = this.readRaw();
+    const firstBuy = this.firstBuyInput.checked;
+    const pattern = this.patternSelect.value;
     this.strings = strings;
     this.build();
     this.wire();
-    this.write(previous);
+    this.writeRaw(raw);
+    this.firstBuyInput.checked = firstBuy;
+    this.patternSelect.value = pattern;
+    this.patternSelect.disabled = firstBuy;
     this.validate();
   }
 

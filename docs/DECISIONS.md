@@ -403,3 +403,57 @@ A scenario holding one chance in ten thousand has not been ruled out. Rounding
 it to "0%" would claim the arithmetic produced something it did not, so anything
 below the displayed precision but above zero is shown as "<0.1%", and the
 same rule at the top gives ">99.9%" rather than a premature "100%".
+
+### D-027 Twelve price fields are grouped into six day boxes
+
+The first version laid the twelve half-days out as one flat grid with captions
+reading "Mon AM", "PM", "Tue AM" and so on. It fitted, and it was unreadable:
+nothing said where one day ended and the next began, so entering Thursday
+evening meant counting cells.
+
+Each day is now its own bordered box holding its two half-days, one box per row
+on a phone, two from 460 pixels and three from 760. A day box at 380 pixels is
+326 wide with two 148-pixel fields in it, which is a comfortable target and
+leaves the day name room to be spelled out rather than abbreviated.
+
+### D-028 Seven languages, and a test that keeps them in step
+
+English and Russian were required; German, Spanish, French, Japanese and
+Simplified Chinese were added because the game's audience is not
+English-speaking and the vocabulary here is small and concrete enough to
+translate without guessing. The choice is remembered in local storage and
+otherwise taken from the browser's own preference order.
+
+Two tests guard the set rather than trusting it: every language must fill every
+key with a non-empty string and match the array lengths of the English table,
+and every template must carry exactly the placeholders the English one does. A
+translation that dropped `{price}` would otherwise ship a sentence with a hole
+in it.
+
+Figures are formatted for the reader's locale, so a thousand groups with a comma
+in English and a space in Russian.
+
+### D-029 The permalink lives in the hash, not the query string
+
+A fragment is not sent to the server. Since the whole point is that no price a
+player types leaves their machine, putting the state after the `#` keeps that
+true even on the hosted build. The language is deliberately excluded: a link
+should arrive in the reader's language, not the sender's.
+
+Malformed links load what they can rather than refusing. A link is not a form,
+and a truncated one that fills in nine of twelve prices is more useful than an
+error.
+
+### D-030 The offline file is the same build, not a second one
+
+`kabucast-offline.html` is `index.html` with the stylesheet link and the script
+tag replaced by their own contents, produced in the same run from the same
+bytes. There is no separate entry point and no reduced feature set, so the two
+artifacts cannot drift. The build asserts that the two tags it replaces are
+still present, so a rename in the HTML fails the build rather than silently
+producing a page with no styles.
+
+Verified by copying the file alone into a directory where `./main.js` and
+`./styles.css` do not exist: it renders, computes, and issues zero resource
+requests. Service worker registration is skipped unless the page was served over
+http or https, so the file works from the filesystem.

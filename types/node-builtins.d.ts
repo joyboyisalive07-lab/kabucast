@@ -16,6 +16,14 @@ declare module "node:fs" {
   export function mkdirSync(path: string, options: { readonly recursive: boolean }): void;
 }
 
+declare module "node:crypto" {
+  interface Hash {
+    update(data: string): Hash;
+    digest(encoding: "hex"): string;
+  }
+  export function createHash(algorithm: "sha256"): Hash;
+}
+
 declare module "node:process" {
   interface Process {
     readonly argv: readonly string[];

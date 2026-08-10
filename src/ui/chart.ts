@@ -18,7 +18,7 @@
 import { at } from "../model/array.ts";
 import { SELLING_SLOT_COUNT } from "../model/constants.ts";
 import type { Strings } from "../i18n/strings.ts";
-import { bells, shortSlotLabel, slotLabel } from "./format.ts";
+import { bells, shortDayLabel, slotLabel } from "./format.ts";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -278,9 +278,9 @@ export class Chart {
         x: this.x(slot).toFixed(2),
         y: String(this.height - 8),
         "text-anchor": "middle",
-        class: "day",
+        class: "day-tick",
       });
-      label.textContent = shortSlotLabel(slot, this.strings.dayNames);
+      label.textContent = shortDayLabel(slot, this.strings.dayShort);
       this.labelGroup.append(label);
     }
   }
@@ -483,20 +483,21 @@ export class Chart {
     const label = slotLabel(slot, this.strings.dayNames, this.strings.morning, this.strings.afternoon);
     const observed = at(data.observed, slot);
     if (observed !== null) {
-      this.readout.textContent = `${label}: ${bells(observed)}`;
+      this.readout.textContent = `${label}: ${bells(observed, this.strings.locale)}`;
       return;
     }
     const band = at(data.band, slot);
     const minimum = at(data.minimum, slot);
     const maximum = at(data.maximum, slot);
     if (band === null) {
-      this.readout.textContent = `${label}: ${bells(minimum)} - ${bells(maximum)}`;
+      this.readout.textContent = `${label}: ${bells(minimum, this.strings.locale)} - ${bells(maximum, this.strings.locale)}`;
       return;
     }
+    const locale = this.strings.locale;
     this.readout.textContent =
-      `${label}: ${bells(at(band, BAND_MID))} ` +
-      `(${this.strings.legendBand50} ${bells(at(band, BAND_LOW_MID))}-${bells(at(band, BAND_HIGH_MID))}, ` +
-      `${this.strings.legendBand90} ${bells(at(band, BAND_LOW))}-${bells(at(band, BAND_HIGH))}, ` +
-      `${this.strings.legendMinimum} ${bells(minimum)}, ${this.strings.legendMaximum} ${bells(maximum)})`;
+      `${label}: ${bells(at(band, BAND_MID), locale)} ` +
+      `(${this.strings.legendBand50} ${bells(at(band, BAND_LOW_MID), locale)}-${bells(at(band, BAND_HIGH_MID), locale)}, ` +
+      `${this.strings.legendBand90} ${bells(at(band, BAND_LOW), locale)}-${bells(at(band, BAND_HIGH), locale)}, ` +
+      `${this.strings.legendMinimum} ${bells(minimum, locale)}, ${this.strings.legendMaximum} ${bells(maximum, locale)})`;
   }
 }

@@ -2,10 +2,9 @@
  * Wiring. Reads the input panel, recomputes, and hands the result to the chart
  * and the view.
  *
- * Recomputes are coalesced into an animation frame so that holding a key down
- * cannot queue a backlog of them, and every section keeps its box whether or
- * not it has content, so nothing below the chart jumps while a number is being
- * typed.
+ * Recomputes are coalesced into a timer so that holding a key down cannot queue
+ * a backlog of them, and every section keeps its box whether or not it has
+ * content, so nothing below the chart jumps while a number is being typed.
  */
 
 import { at } from "../model/array.ts";
@@ -15,15 +14,19 @@ import { computePosterior } from "../infer/posterior.ts";
 import type { Observations } from "../infer/likelihood.ts";
 import { recommend } from "../decide/stopping.ts";
 import type { Recommendation } from "../decide/stopping.ts";
-import { EN } from "../i18n/strings.ts";
+import { LANGUAGES, detectLanguage, rememberLanguage, stringsFor } from "../i18n/index.ts";
+import type { LanguageCode } from "../i18n/index.ts";
 import type { Strings } from "../i18n/strings.ts";
 import { Chart } from "./chart.ts";
 import type { ChartData } from "./chart.ts";
 import { InputPanel } from "./input.ts";
 import type { InputState } from "./input.ts";
+import { decodeState, encodeState } from "./permalink.ts";
 import { renderInconsistent, renderPatterns, renderRecommendation, renderScenarios } from "./view.ts";
 
-function require(id: string): HTMLElement {
+const COPIED_FEEDBACK_MS = 1600;
+
+function element(id: string): HTMLElement {
   const node = document.getElementById(id);
   if (node === null) {
     throw new Error(`missing element: ${id}`);
@@ -84,37 +87,74 @@ function buildChartData(
 }
 
 class Application {
+  private strings: Strings;
+  private language: LanguageCode;
   private readonly chart: Chart;
   private readonly panel: InputPanel;
   private frame: ReturnType<typeof setTimeout> | 0 = 0;
+  private copiedTimer: ReturnType<typeof setTimeout> | 0 = 0;
 
-  private readonly chartSection = require("chart-section");
-  private readonly decisionHost = require("decision");
-  private readonly patternHost = require("patterns");
-  private readonly scenarioHost = require("scenarios");
-  private readonly scenarioSection = require("scenarios-section");
-  private readonly patternSection = require("patterns-section");
+  private readonly chartSection = element("chart-section");
+  private readonly decisionHost = element("decision");
+  private readonly patternHost = element("patterns");
+  private readonly scenarioHost = element("scenarios");
+  private readonly scenarioSection = element("scenarios-section");
+  private readonly patternSection = element("patterns-section");
+  private readonly languageSelect = element("language") as HTMLSelectElement;
+  private readonly copyButton = element("copy-link") as HTMLButtonElement;
 
-  private readonly strings: Strings;
+  constructor() {
+    this.language = detectLanguage();
+    this.strings = stringsFor(this.language);
+    this.chart = new Chart(element("chart"), element("readout"), this.strings);
+    this.panel = new InputPanel(element("inputs"), this.strings, () => this.schedule());
 
-  constructor(strings: Strings) {
-    this.strings = strings;
-    this.chart = new Chart(require("chart"), require("readout"), strings);
-    this.panel = new InputPanel(require("inputs"), strings, () => this.schedule());
+    this.buildLanguageSelect();
+    this.copyButton.addEventListener("click", () => {
+      void this.copyPermalink();
+    });
+    window.addEventListener("hashchange", () => this.applyHash());
+
     this.applyStaticStrings();
-    this.recompute();
+    this.applyHash();
+  }
+
+  private buildLanguageSelect(): void {
+    this.languageSelect.replaceChildren();
+    for (const [code, strings] of LANGUAGES) {
+      const option = document.createElement("option");
+      option.value = code;
+      option.textContent = strings.languageName;
+      this.languageSelect.append(option);
+    }
+    this.languageSelect.value = this.language;
+    this.languageSelect.addEventListener("change", () => {
+      const chosen = this.languageSelect.value as LanguageCode;
+      this.language = chosen;
+      this.strings = stringsFor(chosen);
+      rememberLanguage(chosen);
+      document.documentElement.lang = chosen;
+      this.panel.setStrings(this.strings);
+      this.chart.setStrings(this.strings);
+      this.applyStaticStrings();
+      this.recompute();
+    });
   }
 
   private applyStaticStrings(): void {
-    require("tagline").textContent = this.strings.tagline;
-    require("chart-heading").textContent = this.strings.chartHeading;
-    require("axis-note").textContent = this.strings.axisNote;
-    require("decision-heading").textContent = this.strings.recommendationHeading;
-    require("patterns-heading").textContent = this.strings.patternsHeading;
-    require("scenarios-heading").textContent = this.strings.scenariosHeading;
-    require("scenarios-hint").textContent = this.strings.scenariosHint;
+    document.documentElement.lang = this.language;
+    element("tagline").textContent = this.strings.tagline;
+    element("chart-heading").textContent = this.strings.chartHeading;
+    element("axis-note").textContent = this.strings.axisNote;
+    element("decision-heading").textContent = this.strings.recommendationHeading;
+    element("patterns-heading").textContent = this.strings.patternsHeading;
+    element("scenarios-heading").textContent = this.strings.scenariosHeading;
+    element("scenarios-hint").textContent = this.strings.scenariosHint;
+    element("language-label").textContent = this.strings.languageLabel;
+    this.languageSelect.setAttribute("aria-label", this.strings.languageLabel);
+    this.copyButton.textContent = this.strings.copyLink;
 
-    const legend = require("legend");
+    const legend = element("legend");
     legend.replaceChildren();
     for (const [key, className] of [
       [this.strings.legendBand90, "swatch-90"],
@@ -135,6 +175,31 @@ class Application {
     }
   }
 
+  private applyHash(): void {
+    const encoded = window.location.hash.replace(/^#/, "");
+    if (encoded !== "" && encoded !== encodeState(this.panel.read())) {
+      this.panel.write(decodeState(encoded));
+    }
+    this.recompute();
+  }
+
+  private async copyPermalink(): Promise<void> {
+    const url = `${window.location.origin}${window.location.pathname}#${encodeState(this.panel.read())}`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      // Clipboard access can be refused; the address bar already holds the link.
+    }
+    this.copyButton.textContent = this.strings.copied;
+    if (this.copiedTimer !== 0) {
+      clearTimeout(this.copiedTimer);
+    }
+    this.copiedTimer = setTimeout(() => {
+      this.copyButton.textContent = this.strings.copyLink;
+      this.copiedTimer = 0;
+    }, COPIED_FEEDBACK_MS);
+  }
+
   /**
    * Coalesced with a timer rather than an animation frame. A frame callback
    * does not run while the page is not compositing, so a recompute queued on
@@ -152,6 +217,13 @@ class Application {
 
   private recompute(): void {
     const state = this.panel.read();
+
+    const encoded = encodeState(state);
+    const target = encoded === "" ? window.location.pathname : `#${encoded}`;
+    if (window.location.hash.replace(/^#/, "") !== encoded) {
+      window.history.replaceState(null, "", target);
+    }
+
     const posterior = computePosterior({
       basePrice: state.basePrice,
       observations: state.prices,
@@ -173,14 +245,27 @@ class Application {
 
     const recommendation = recommend(posterior, state.prices);
     const bounds = priceBoundsPerSlot(posterior, state.prices);
-    const minimum = bounds.map((bound) => bound.min);
-    const maximum = bounds.map((bound) => bound.max);
 
-    this.chart.update(buildChartData(state, minimum, maximum, recommendation));
+    this.chart.update(
+      buildChartData(
+        state,
+        bounds.map((bound) => bound.min),
+        bounds.map((bound) => bound.max),
+        recommendation,
+      ),
+    );
     renderRecommendation(this.decisionHost, recommendation, this.strings);
     renderPatterns(this.patternHost, posterior, this.strings);
     renderScenarios(this.scenarioHost, posterior, this.strings);
   }
 }
 
-new Application(EN);
+new Application();
+
+// The offline single file runs from the filesystem, where there is no origin to
+// register against and nothing to fetch.
+if ((location.protocol === "https:" || location.protocol === "http:") && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    void navigator.serviceWorker.register("./service-worker.js").catch(() => undefined);
+  });
+}

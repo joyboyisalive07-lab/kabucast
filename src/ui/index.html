@@ -8,12 +8,22 @@
       name="description"
       content="Turnip price predictor for Animal Crossing: New Horizons. Exact posterior probabilities and an optimal selling decision."
     />
+    <meta name="theme-color" content="#101316" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="masthead">
-      <h1>kabucast</h1>
-      <p id="tagline" class="tagline"></p>
+      <div class="masthead-main">
+        <h1>kabucast</h1>
+        <p id="tagline" class="tagline"></p>
+      </div>
+      <div class="masthead-actions">
+        <label class="language">
+          <span id="language-label" class="visually-hidden"></span>
+          <select id="language"></select>
+        </label>
+        <button id="copy-link" type="button" class="secondary"></button>
+      </div>
     </header>
 
     <main>

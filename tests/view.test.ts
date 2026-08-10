@@ -9,15 +9,62 @@ import {
   PATTERN_LARGE_SPIKE,
   PATTERN_SMALL_SPIKE,
 } from "../src/model/types.ts";
+import { LANGUAGES } from "../src/i18n/index.ts";
+import { RU } from "../src/i18n/ru.ts";
 import { EN } from "../src/i18n/strings.ts";
 import { bells, fill, percent, slotLabel } from "../src/ui/format.ts";
 import { describeScenario } from "../src/ui/view.ts";
 
-test("bells are rounded and grouped", () => {
-  equal(bells(0), "0");
-  equal(bells(87.4), "87");
-  equal(bells(87.6), "88");
-  equal(bells(1234.2), "1,234");
+test("bells are rounded and grouped for the reader's language", () => {
+  equal(bells(0, EN.locale), "0");
+  equal(bells(87.4, EN.locale), "87");
+  equal(bells(87.6, EN.locale), "88");
+  equal(bells(1234.2, EN.locale), "1,234");
+  // Russian groups with a space rather than a comma.
+  ok(/^1.234$/u.test(bells(1234.2, RU.locale)), bells(1234.2, RU.locale));
+});
+
+test("every language fills every string", () => {
+  const keys = Object.keys(EN) as (keyof typeof EN)[];
+  for (const [code, strings] of LANGUAGES) {
+    for (const key of keys) {
+      const value = strings[key];
+      ok(value !== undefined, `${code} is missing ${String(key)}`);
+      if (Array.isArray(value)) {
+        equal(
+          value.length,
+          (EN[key] as readonly string[]).length,
+          `${code} has the wrong number of ${String(key)}`,
+        );
+        for (const item of value) {
+          ok(typeof item === "string" && item.length > 0, `${code} has an empty ${String(key)}`);
+        }
+      } else {
+        ok(typeof value === "string" && value.length > 0, `${code} has an empty ${String(key)}`);
+      }
+    }
+  }
+});
+
+test("every language keeps the placeholders its templates need", () => {
+  const templated = [
+    "sellNowDetail",
+    "holdDetail",
+    "scenarioPeakAt",
+    "scenarioFalls",
+    "scenarioCount",
+  ] as const;
+  for (const [code, strings] of LANGUAGES) {
+    for (const key of templated) {
+      const expected = EN[key].match(/\{\w+\}/g) ?? [];
+      const actual = strings[key].match(/\{\w+\}/g) ?? [];
+      equal(
+        [...actual].sort().join(","),
+        [...expected].sort().join(","),
+        `${code} ${key}: "${strings[key]}"`,
+      );
+    }
+  }
 });
 
 /**
