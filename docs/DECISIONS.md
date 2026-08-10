@@ -58,3 +58,78 @@ float multiplication semantics rather than the algorithm itself.
 A single 32-bit word would place samples on a 2^-32 lattice. The likelihood
 work integrates over rate intervals that can be narrow, and a visible lattice
 there would show up as bias in the calibration curve rather than as a bug.
+
+## Phase 1 — sources
+
+### D-006 Ninji's decompilation is the primary source; Turnip Prophet is a second reading, not a second source
+
+Every constant was read from the decompiled C++ at
+<https://gist.github.com/Treeki/85be14d297c80c8b3c0a76375743325b> and then
+confirmed against the independent JavaScript transcription in
+<https://github.com/mikebryant/ac-nh-turnip-prices>. All sixteen transition
+probabilities and every rate range, phase-length distribution and rounding rule
+agreed; no disagreement was found.
+
+That is weaker than it sounds and [ALGORITHM.md](ALGORITHM.md) says so: both are
+readings of the same extraction from the same binary, so the agreement rules out
+transcription error and nothing else. No genuinely independent extraction was
+found. This is why the project's accuracy claim rests on calibration against
+kabucast's own reimplementation of the generator rather than on the sources
+being beyond doubt.
+
+### D-007 An unknown previous pattern is marginalised with the chain's stationary distribution
+
+The prior over this week's pattern with last week's unknown is
+`sum over q of pi(q) * P(pattern | q)`. Choosing `pi` to be the stationary
+distribution makes that expression equal `pi`, which is both the natural fixed
+point and the only choice that is self-consistent week over week. It was solved
+exactly in rational arithmetic from the sourced matrix, and only afterwards
+compared with the same four fractions used by Turnip Prophet.
+
+Rejected: a uniform prior over the four patterns. It is not what a long-running
+chain produces, and it would quietly overweight the decreasing pattern, whose
+stationary share is 0.148 rather than 0.25.
+
+The assumption behind the choice is that a player's week is observed at a
+uniformly random point of a long chain. That is an assumption, and it is
+labelled as one in the documentation rather than presented as a fact.
+
+### D-008 Decay phases are solved in exact closed form; Monte Carlo is a test, not a component
+
+The brief allowed a Monte Carlo estimator with a reported error bound where the
+geometry has no closed form. Working the geometry through, there is a closed
+form everywhere: propagating the rate density through a decreasing phase turns a
+piecewise polynomial of degree `d` into one of degree `d + 1`, phases are at
+most twelve slots long, and the small-spike peak reduces to integrals of
+`a + c/u + e/u^2`. So the inference path computes exact volumes and contains no
+sampling at all.
+
+Monte Carlo is kept, but as an independent check in the test suite: the closed
+form must agree with a sampled estimate of the same polytope to within the
+estimate's own confidence interval. Shipping an estimator that nothing calls
+would be dead code; using one to verify the exact result is evidence.
+
+### D-009 A float32 tolerance, applied identically to feasibility and to measure
+
+The game rounds in 32-bit floating point and kabucast computes in doubles, so
+near an inverted interval endpoint the two can disagree in the last place. The
+cost of that is not a small numerical error but a scenario rejected outright.
+
+kabucast widens each inverted rate interval by a tolerance derived from the
+32-bit unit in the last place, and uses the widened interval for both the
+feasibility test and the measure, so the number reported stays the measure of
+what was actually accepted. The added measure is of order 1e-5 relative.
+
+Rejected: Turnip Prophet's approach of retrying with the accepted price widened
+by up to five whole bells and clamping observations into the predicted range.
+Five bells is not a rounding tolerance, and after that clamp the reported
+numbers are not posterior probabilities. When no scenario survives, kabucast
+reports the input as inconsistent with the generator instead.
+
+### D-010 The `whatPattern >= 4` branch is not exposed
+
+The generator forces the decreasing pattern when the stored previous pattern is
+out of range, which covers an uninitialised save. A player selecting last week's
+pattern has one to select, and a player who has never bought is covered by the
+first-time-buyer rule, so exposing a fifth option would offer a state no user
+can be in. Unknown previous pattern is handled by D-007 instead.
