@@ -170,3 +170,40 @@ enumerated probabilities, so the two views cannot drift apart silently.
 
 Rejected: a separate hand-written table of scenarios for the inference. It would
 be faster to read and would eventually disagree with the generator.
+
+## Phase 3 — the likelihood
+
+### D-013 Densities are piecewise polynomials in a basis local to each piece
+
+The rate density inside a decreasing phase is exactly a piecewise polynomial:
+it starts uniform, restriction cuts pieces without changing degree, and
+convolution with the uniform decrement raises the degree by one. Keeping that
+representation exactly is what turns the polytope volume into a closed form.
+
+Each piece is stored as coefficients of `(x - left breakpoint)^m` rather than of
+`x^m`, and is re-based whenever a cut moves its left breakpoint. Over a phase of
+twelve slots the degree reaches eleven, and in a global basis the coefficients
+of a degree-eleven polynomial over a piece a hundredth of a unit wide span
+thirty orders of magnitude. In a local basis the argument never leaves one piece
+width and the terms decay instead.
+
+Rejected: a global monomial basis, for the reason above. Rejected: a grid, which
+is what Turnip Prophet does; it is simpler but it is an approximation, and being
+exact here is the reason this project exists.
+
+### D-014 The peak of the small spike is integrated, not sampled
+
+The three correlated slots reduce to a one-dimensional integral whose integrand
+is `A0 + A1 / v + A2 / v^2` on each piece, so the whole thing is
+`A0 v + A1 ln v - A2 / v`. The logarithm and the reciprocal appear only where
+their coefficients are non-zero, and in exactly those regions `v` is bounded
+away from zero by the constraint that produced the coefficient, so the
+singularity at `v = 0` is unreachable rather than merely unlikely.
+
+### D-015 The likelihood primitives are separately testable
+
+`independentProbability`, `decayRunProbability` and `peakProbability` take
+intervals rather than prices, so the tests exercise the geometry directly
+against a sampler that shares no code with them. Converting a price into an
+interval is a separate function with its own tests, which keeps a failure in
+the rounding inversion from being mistaken for a failure in the volume.

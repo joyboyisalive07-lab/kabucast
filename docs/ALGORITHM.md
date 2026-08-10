@@ -364,12 +364,36 @@ breakpoints stay tractable because the translations come from a fixed pair
 `{d_lo, d_hi}` and collide heavily: after `k` steps a single starting breakpoint
 generates at most `(k+1)(k+2)/2` distinct offsets.
 
+Two properties of the implementation are worth stating because they are what
+make the exact route practical, and both are asserted in `tests/piecewise.ts`:
+
+- **The degree is exactly the number of steps.** Starting from a uniform, the
+  density after `k` convolutions has degree `k`, so the longest possible phase
+  reaches degree eleven.
+- **The breakpoints grow linearly, not exponentially.** Each convolution
+  translates the existing breakpoints by `-decayLo` and by `-decayHi`, so after
+  `k` steps a single starting breakpoint has produced the offsets
+  `i * decayLo + j * decayHi` with `i + j = k`, of which there are `k + 1`
+  distinct values rather than `2^k`. Breakpoints that should coincide are
+  reached by different orders of the same subtractions and so differ by a few
+  units in the last place; they are merged below `1e-12`, which is seven orders
+  of magnitude below the closest genuinely distinct pair, a price bucket of
+  `1 / base`.
+
+Each piece is stored in a basis local to its own left breakpoint and re-based
+whenever a cut moves that breakpoint. The argument of every polynomial then
+stays inside one piece width, which is what keeps a degree-eleven coefficient
+from losing its meaning.
+
 Monte Carlo therefore does not appear in kabucast's inference path at all. It
 appears in the test suite, where the closed form is checked against a sampled
 estimate of the same polytope with a reported error bound; a closed form that
 agrees with an independent estimator to within its own confidence interval is
-worth more than an estimator alone. Phase 3 implements this and
-[CALIBRATION.md](CALIBRATION.md) reports the agreement.
+worth more than an estimator alone. Eleven configurations covering both
+decrement rules, gaps between observations, adjacent observations, a single
+observation at the end of a long run, and every combination of constrained and
+unconstrained slots in the small-spike peak are each checked against two
+million samples and agree inside four standard errors.
 
 ### The small-spike peak
 
