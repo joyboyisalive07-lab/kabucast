@@ -1,0 +1,551 @@
+/*
+ * One accent hue, two surfaces, and type doing the rest of the work.
+ *
+ * Dark is the default because the tool is used on a phone next to a game, and
+ * prefers-color-scheme: light is honoured rather than assumed away. There are
+ * no gradients and no shadows: every border here separates two things that are
+ * genuinely different.
+ */
+
+:root {
+  color-scheme: dark light;
+
+  --surface: #101316;
+  --surface-raised: #171b1f;
+  --border: #262c32;
+  --text: #e6eaee;
+  --text-muted: #949ea8;
+  --accent: #5fd08a;
+  --accent-dim: #2c6b47;
+  --invalid: #e0685f;
+
+  --band-90: rgb(95 208 138 / 0.14);
+  --band-50: rgb(95 208 138 / 0.28);
+  --edge: rgb(148 158 168 / 0.55);
+
+  --radius: 10px;
+  --gap: 14px;
+
+  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-figure: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", "Roboto Mono",
+    Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --surface: #f6f7f8;
+    --surface-raised: #ffffff;
+    --border: #dde1e5;
+    --text: #12171b;
+    --text-muted: #5c6670;
+    --accent: #17794a;
+    --accent-dim: #a8ddc0;
+    --invalid: #b3261e;
+
+    --band-90: rgb(23 121 74 / 0.13);
+    --band-50: rgb(23 121 74 / 0.26);
+    --edge: rgb(92 102 112 / 0.55);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0 12px 48px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+main,
+.masthead,
+.colophon {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.masthead {
+  padding: 22px 4px 10px;
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+}
+
+.panel {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: var(--gap);
+}
+
+.panel > h2 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+/* Input */
+
+.input-row {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 620px) {
+  .input-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field-hint,
+.field-error {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.field-error {
+  color: var(--invalid);
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 9px 10px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.price-input {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+  font-size: 16px;
+  text-align: center;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+input.invalid {
+  border-color: var(--invalid);
+}
+
+.toggle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px 8px;
+  align-self: end;
+}
+
+.toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.toggle .field-hint {
+  grid-column: 2;
+}
+
+.inputs h2 {
+  margin: 18px 0 2px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+
+@media (min-width: 620px) {
+  .price-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.price-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.price-caption {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+button {
+  font: inherit;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Chart */
+
+.chart {
+  width: 100%;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.grid line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.base-line {
+  stroke: var(--text-muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.band-90 {
+  fill: var(--band-90);
+}
+
+.band-50 {
+  fill: var(--band-50);
+}
+
+.median {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.edge {
+  fill: none;
+  stroke: var(--edge);
+  stroke-width: 1;
+}
+
+.edge-min {
+  stroke-dasharray: 4 3;
+}
+
+.edge-max {
+  stroke-dasharray: 1 3;
+}
+
+.peak line {
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  opacity: 0.75;
+}
+
+.markers circle {
+  fill: var(--text);
+  stroke: var(--surface-raised);
+  stroke-width: 1.5;
+}
+
+.cursor {
+  stroke: var(--text-muted);
+  stroke-width: 1;
+}
+
+.cursor[hidden],
+.base-line[hidden] {
+  display: none;
+}
+
+text.tick,
+text.day {
+  fill: var(--text-muted);
+  font-family: var(--font-figure);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.readout {
+  margin: 8px 0 0;
+  min-height: 2.6em;
+  font-family: var(--font-figure);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.axis-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.swatch-90 {
+  background: var(--band-90);
+  border: 1px solid var(--accent-dim);
+}
+.swatch-50 {
+  background: var(--band-50);
+  border: 1px solid var(--accent-dim);
+}
+.swatch-median {
+  height: 2px;
+  background: var(--accent);
+}
+.swatch-min {
+  height: 0;
+  border-top: 1px dashed var(--edge);
+}
+.swatch-max {
+  height: 0;
+  border-top: 1px dotted var(--edge);
+}
+.swatch-observed {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text);
+}
+.swatch-peak {
+  width: 0;
+  height: 12px;
+  border-left: 1px dashed var(--accent);
+}
+
+/* Decision */
+
+.verdict {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.verdict[data-action="sell"] {
+  color: var(--accent);
+}
+
+.verdict[data-action="invalid"] {
+  color: var(--invalid);
+}
+
+.verdict-detail {
+  margin: 4px 0 12px;
+  color: var(--text-muted);
+}
+
+.statistics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 520px) {
+  .statistics {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.statistic-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.statistic-value {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+  font-size: 22px;
+}
+
+.statistic-note {
+  font-family: var(--font-figure);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.muted {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* Patterns */
+
+table.patterns {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.patterns th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding-bottom: 6px;
+}
+
+table.patterns th.figure,
+table.patterns td.figure {
+  text-align: right;
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+table.patterns td {
+  padding: 7px 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+table.patterns tr.eliminated td {
+  color: var(--text-muted);
+}
+
+.bar {
+  display: block;
+  height: 3px;
+  margin-top: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  width: calc(var(--share) * 100%);
+  transition: width 220ms ease-out;
+}
+
+/* Scenarios */
+
+.scenario-group {
+  border-top: 1px solid var(--border);
+}
+
+.scenario-group summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.scenario-group ul {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.scenario-group li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0 3px 14px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.figure {
+  font-family: var(--font-figure);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Colophon */
+
+.colophon {
+  padding: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.colophon a {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transition: none;
+  }
+}

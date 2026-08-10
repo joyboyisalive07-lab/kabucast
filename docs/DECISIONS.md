@@ -348,3 +348,58 @@ No screenshot will be staged or drawn by hand; the images are of the interface
 actually running, and the calibration plot is generated from the simulation
 output committed alongside it. An attractive page that overstates would fail the
 same honesty rule as an overconfident probability.
+
+## Phase 7 — the interface
+
+### D-022 The price axis is logarithmic
+
+A week where a large spike is still possible spans about forty bells to six
+hundred. On a linear axis the forty-to-a-hundred region a player actually reads
+collapses into the bottom eighth of the chart, and the shape of the fan there
+becomes unreadable. Prices are a rate times a base price, so they are
+multiplicative by construction and a log axis is the natural one; a doubling
+occupies the same height wherever it happens.
+
+The axis is labelled as logarithmic on the page rather than left to be inferred.
+Rejected: a square-root axis, which compresses less honestly and has no
+interpretation; and clipping the possible-maximum line, which would hide the
+very thing a spike week needs to show.
+
+### D-023 The fan grows out of the last recorded price
+
+At the last slot the player has entered, the distribution is a point mass: that
+price is known. The bands are therefore anchored there with all five percentiles
+equal to it, and widen from that point. Starting the fan at the following slot
+would draw a gap between what is known and what is forecast, and the two are one
+object.
+
+### D-024 Nothing the interface must get right depends on an animation frame
+
+The recompute was first coalesced into `requestAnimationFrame`. Testing found it
+silently doing nothing: frame callbacks do not run while a page is not
+compositing, so a recompute queued on one can be dropped entirely. It is now
+coalesced with a timer.
+
+The chart's transition genuinely needs frames, so it keeps them, but it is
+backed by a timer that snaps to the final geometry if the frames never arrive,
+and `prefers-reduced-motion` skips the animation rather than shortening it.
+Otherwise a chart in a background tab would keep showing the previous week.
+
+### D-025 The chart measures itself in pixels rather than using a fixed grid
+
+The viewBox is set to the element's measured pixel size, so one SVG unit is one
+CSS pixel and an eleven-pixel tick label is eleven pixels at 380 wide as well as
+at 1280. A fixed viewBox scaled by CSS would have made the same label six pixels
+on a phone.
+
+The measurement is taken when the data changes as well as from a resize
+observer, for the reason in D-024: an observer is delivered during rendering, so
+a chart built before its container was laid out would otherwise keep a stale
+viewBox and scale all of its type.
+
+### D-026 Probabilities that survive are never printed as zero
+
+A scenario holding one chance in ten thousand has not been ruled out. Rounding
+it to "0%" would claim the arithmetic produced something it did not, so anything
+below the displayed precision but above zero is shown as "<0.1%", and the
+same rule at the top gives ">99.9%" rather than a premature "100%".

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>kabucast</title>
+    <meta
+      name="description"
+      content="Turnip price predictor for Animal Crossing: New Horizons. Exact posterior probabilities and an optimal selling decision."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <h1>kabucast</h1>
+      <p id="tagline" class="tagline"></p>
+    </header>
+
+    <main>
+      <section id="inputs" class="panel inputs" aria-label="Input"></section>
+
+      <section id="chart-section" class="panel">
+        <h2 id="chart-heading"></h2>
+        <div id="chart" class="chart"></div>
+        <p id="readout" class="readout"></p>
+        <p id="axis-note" class="axis-note"></p>
+        <ul id="legend" class="legend"></ul>
+      </section>
+
+      <section class="panel decision">
+        <h2 id="decision-heading"></h2>
+        <div id="decision"></div>
+      </section>
+
+      <section id="patterns-section" class="panel">
+        <h2 id="patterns-heading"></h2>
+        <div id="patterns"></div>
+      </section>
+
+      <section id="scenarios-section" class="panel">
+        <h2 id="scenarios-heading"></h2>
+        <p id="scenarios-hint" class="field-hint"></p>
+        <div id="scenarios"></div>
+      </section>
+    </main>
+
+    <footer class="colophon">
+      <p>
+        Not affiliated with, endorsed by, or sponsored by Nintendo. Price algorithm extracted by
+        <a href="https://gist.github.com/Treeki/85be14d297c80c8b3c0a76375743325b">Ash Wolf</a>.
+        <a href="https://github.com/joyboyisalive07-lab/kabucast">Source</a>.
+      </p>
+    </footer>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

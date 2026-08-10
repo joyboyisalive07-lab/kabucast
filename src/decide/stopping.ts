@@ -56,6 +56,9 @@ const RIDGE = 1e-9;
 
 const FEATURE_COUNT = 6;
 
+/** The quantiles the fan chart draws, as fractions. */
+const BAND_QUANTILES = [0.05, 0.25, 0.5, 0.75, 0.95] as const;
+
 export interface SlotOutlook {
   readonly slot: number;
   /** Posterior predictive mean of the price at this slot. */
@@ -64,6 +67,10 @@ export interface SlotOutlook {
   readonly expectedContinuation: number;
   /** Share of futures in which the rule takes this slot. */
   readonly probabilitySellHere: number;
+  /** Prices at the 5th, 25th, 50th, 75th and 95th percentiles. */
+  readonly band: readonly number[];
+  /** Share of futures in which this slot holds the highest price of the week. */
+  readonly probabilityWeekMaximum: number;
 }
 
 export interface Recommendation {
@@ -321,21 +328,41 @@ export function recommend(posterior: Posterior, observations: Observations): Rec
   const better =
     sellNowPrice === null ? 1 : realised.filter((value) => value > sellNowPrice).length / count;
 
+  const highestSlot = new Array<number>(length).fill(0);
+  for (let path = 0; path < count; path += 1) {
+    let best = -Infinity;
+    let bestSlot = 0;
+    for (let slot = 0; slot < length; slot += 1) {
+      const price = priceAt(evaluation, path, slot);
+      if (price > best) {
+        best = price;
+        bestSlot = slot;
+      }
+    }
+    highestSlot[bestSlot] = at(highestSlot, bestSlot) + 1;
+  }
+
   const outlook: SlotOutlook[] = [];
+  const column = new Float64Array(count);
   for (let slot = 0; slot < length; slot += 1) {
     let priceTotal = 0;
     let continuationTotal = 0;
     for (let path = 0; path < count; path += 1) {
-      priceTotal += priceAt(evaluation, path, slot);
+      const price = priceAt(evaluation, path, slot);
+      column[path] = price;
+      priceTotal += price;
       if (slot + 1 < length) {
         continuationTotal += at(valueFrom, slot + 1)[path] ?? 0;
       }
     }
+    const ordered = [...column].sort((a, b) => a - b);
     outlook.push({
       slot: evaluation.firstFutureSlot + slot,
       expectedPrice: priceTotal / count,
       expectedContinuation: continuationTotal / count,
       probabilitySellHere: at(soldAt, slot) / count,
+      band: BAND_QUANTILES.map((quantile) => percentile(ordered, quantile)),
+      probabilityWeekMaximum: at(highestSlot, slot) / count,
     });
   }
 
