@@ -13,12 +13,17 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import process from "node:process";
 import * as esbuild from "esbuild";
+import { writeIcons } from "./icon.ts";
 
 const OUTPUT_DIRECTORY = "dist";
 const CACHE_VERSION_LENGTH = 12;
 
 const STYLE_LINK = '<link rel="stylesheet" href="./styles.css" />';
 const SCRIPT_TAG = '<script type="module" src="./main.js"></script>';
+const ICON_LINKS =
+  '<link rel="icon" href="./icon.svg" type="image/svg+xml" />' +
+  '<link rel="icon" href="./icon-32.png" sizes="32x32" />' +
+  '<link rel="apple-touch-icon" href="./icon-128.png" />';
 
 async function bundle(entry: string, define: Readonly<Record<string, string>>): Promise<string> {
   const result = await esbuild.build({
@@ -46,6 +51,7 @@ function inlineSafe(script: string): string {
 async function build(): Promise<void> {
   mkdirSync(OUTPUT_DIRECTORY, { recursive: true });
 
+  const icons = writeIcons();
   const script = await bundle("src/ui/main.ts", {});
   const styles = readFileSync("src/ui/styles.css", "utf8");
   const page = readFileSync("src/ui/index.html", "utf8");
@@ -66,17 +72,21 @@ async function build(): Promise<void> {
   writeFileSync(`${OUTPUT_DIRECTORY}/index.html`, page);
   writeFileSync(`${OUTPUT_DIRECTORY}/service-worker.js`, serviceWorker);
 
-  if (!page.includes(STYLE_LINK) || !page.includes(SCRIPT_TAG)) {
-    throw new Error("index.html no longer carries the tags the offline build replaces");
+  for (const marker of [STYLE_LINK, SCRIPT_TAG, ICON_LINKS]) {
+    if (!page.includes(marker)) {
+      throw new Error(`index.html no longer carries a tag the offline build replaces: ${marker}`);
+    }
   }
+  const inlineIcon = `data:image/svg+xml,${encodeURIComponent(icons.svg)}`;
   const offline = page
+    .replace(ICON_LINKS, `<link rel="icon" href="${inlineIcon}" type="image/svg+xml" />`)
     .replace(STYLE_LINK, `<style>\n${styles}</style>`)
     .replace(SCRIPT_TAG, `<script type="module">\n${inlineSafe(script)}\n</script>`);
   writeFileSync(`${OUTPUT_DIRECTORY}/kabucast-offline.html`, offline);
 
   process.stdout.write(
     `dist/ built, cache ${version}, script ${script.length} bytes, ` +
-      `offline file ${offline.length} bytes\n`,
+      `icon ${icons.icoBytes} bytes, offline file ${offline.length} bytes\n`,
   );
 }
 

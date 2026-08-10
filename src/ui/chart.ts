@@ -209,6 +209,10 @@ export class Chart {
     this.svg.setAttribute("height", String(height));
     this.drawStatic();
     this.render();
+    // The markers and the peak line carry absolute coordinates, so they have to
+    // be laid out again here. Leaving them out left them at their old positions
+    // after a resize, which put the recorded prices somewhere they never were.
+    this.drawMarkers();
     this.drawCursor();
   }
 

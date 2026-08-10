@@ -457,3 +457,51 @@ Verified by copying the file alone into a directory where `./main.js` and
 `./styles.css` do not exist: it renders, computes, and issues zero resource
 requests. Service worker registration is skipped unless the page was served over
 http or https, so the file works from the filesystem.
+
+## Phase 9 — icon, executable and documentation
+
+### D-031 The icon is defined once in code and emits both the vector and the raster
+
+`tools/icon.ts` holds the geometry and writes the SVG, the PNG sizes and the
+Windows `.ico` from the same numbers, with its own supersampled rasteriser and
+its own PNG encoder over `node:zlib`. Two reasons. An SVG file plus separately
+exported bitmaps drift the moment one is edited, and rasterising an SVG at build
+time would mean a third dependency in a project whose budget is typescript and
+esbuild.
+
+The mark is a price line: a level approach, a sharp rise, a faster fall, with
+the spike itself in the accent colour and the approaches not. A separate marker
+at the apex was tried first and became a blob at sixteen pixels.
+
+### D-032 The executable copies the page out of its bundle before opening it
+
+A one-file PyInstaller build extracts to a temporary directory and deletes it
+when the process exits, so handing the browser a path inside that directory is a
+race the browser usually loses. The launcher copies the page to a stable
+location under the system temporary directory and opens that.
+
+`Path.as_uri()` does the percent-encoding, which is what makes a path with
+spaces work. Verified twice: the executable run from
+`build\space test folder\` and again with the temporary directory pointed at
+`build\temp with spaces\`, which produced
+`file:///.../temp%20with%20spaces/kabucast/kabucast-offline.html` and a
+byte-identical copy of the page.
+
+### D-033 The screenshots come from headless Chrome, not from a canvas trick
+
+Rasterising the live page inside the browser was tried, by cloning the DOM into
+an SVG `foreignObject` and drawing it to a canvas. Chromium taints a canvas that
+has drawn a `foreignObject`, so the image cannot be read back. The screenshots
+are therefore taken by headless Chrome against the local build, at twice device
+scale, once per language. They are of the interface actually running; nothing is
+composed by hand.
+
+### D-034 The README argues from the reproducible case
+
+Recorded in D-021 and now carried out. The lead is the input
+`100.88.84.80.76.72.71` with a link to each tool, because a reader can check it
+in ten seconds. The section immediately after it says where the two tools agree,
+which is nearly everywhere, and corrects the common claim that Turnip Prophet
+assumes independence inside falling phases. Overstating the difference would
+have been easier and would have failed the same honesty rule as an overconfident
+probability.

@@ -11,9 +11,13 @@ declare module "node:test" {
 }
 
 declare module "node:fs" {
-  export function writeFileSync(path: string, data: string): void;
+  export function writeFileSync(path: string, data: string | Uint8Array): void;
   export function readFileSync(path: string, encoding: "utf8"): string;
   export function mkdirSync(path: string, options: { readonly recursive: boolean }): void;
+}
+
+declare module "node:zlib" {
+  export function deflateSync(data: Uint8Array): Uint8Array;
 }
 
 declare module "node:crypto" {
