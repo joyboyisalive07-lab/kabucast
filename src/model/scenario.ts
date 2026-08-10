@@ -33,6 +33,7 @@ import {
   SMALL_SPIKE_PEAK_START_MIN,
 } from "./constants.ts";
 import {
+  PATTERNS,
   PATTERN_DECREASING,
   PATTERN_FLUCTUATING,
   PATTERN_LARGE_SPIKE,
@@ -208,3 +209,12 @@ export function enumerateScenarios(pattern: Pattern): readonly Scenario[] {
     }
   }
 }
+
+/**
+ * Enumerated once, indexed by pattern. The inference walks this on every
+ * recompute, and stable object identity lets posterior terms be grouped by
+ * reference rather than by serialising a scenario.
+ */
+export const SCENARIOS_BY_PATTERN: readonly (readonly Scenario[])[] = PATTERNS.map((pattern) =>
+  enumerateScenarios(pattern),
+);

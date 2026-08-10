@@ -207,3 +207,44 @@ intervals rather than prices, so the tests exercise the geometry directly
 against a sampler that shares no code with them. Converting a price into an
 interval is a separate function with its own tests, which keeps a failure in
 the rounding inversion from being mistaken for a failure in the volume.
+
+## Phase 4 — the posterior
+
+### D-016 The posterior is joint over scenario and base price, enumerated in full
+
+A term is a (scenario, base price) pair. With the Sunday price unknown there are
+72 scenarios times 21 base prices, so 1512 terms, and every one is evaluated.
+The per-pattern, per-scenario and per-base-price figures are marginals of that
+one table, which is why they all normalise against the same denominator instead
+of being three separate calculations that could disagree.
+
+Enumeration is affordable. Measured over sixty generated weeks per column, with
+the Sunday price unknown so that all 21 base prices stay in play:
+
+| Prices observed | Mean | Worst | Terms alive at the worst case |
+| --- | --- | --- | --- |
+| 0 | 0.83 ms | 2.91 ms | 1512 |
+| 1 | 0.68 ms | 1.85 ms | 903 |
+| 2 | 1.09 ms | 2.50 ms | 420 |
+| 3 | 1.21 ms | 3.51 ms | 219 |
+| 6 | 1.32 ms | 3.05 ms | 57 |
+| 12 | 1.62 ms | 4.00 ms | 5 |
+
+Four milliseconds against a hundred millisecond budget. No pruning heuristic is
+needed and none is used, so no scenario is ever dropped for being unlikely.
+
+### D-017 An input no scenario can produce is reported, not repaired
+
+`computePosterior` returns null when every term has zero weight. It does not
+widen the accepted prices, does not clamp an observation into a predicted range,
+and does not fall back to a uniform answer.
+
+This fires more often than it might seem, because most price sequences are not
+reachable: at a base price of 100, a Monday morning of 93 followed by a Monday
+afternoon of 88 belongs to no pattern, since 93 requires a high-phase slot and
+88 is below every high-phase rate and above every decreasing-phase start. Two
+of this phase's own test fixtures had to be replaced after the code correctly
+rejected them, which is the behaviour working.
+
+The alternative is Turnip Prophet's fudge factor, rejected in D-009. A number
+produced after the data has been altered to fit is not a posterior probability.
