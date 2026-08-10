@@ -11,17 +11,42 @@
 import { ROUNDING_ADDEND } from "../model/constants.ts";
 import type { Interval } from "../model/rate.ts";
 
+const FLOAT32_MANTISSA_BITS = 23;
+const FLOAT32_SMALLEST_SUBNORMAL = 2 ** -149;
+
 /**
- * The game rounds `rate * base` in float32 while this runs in doubles, so the
- * true rate can sit just outside the inverted interval. Left uncorrected that
- * rejects a whole scenario rather than perturbing a probability.
- * tests/generator.test.ts measures the excursion at under 1e-6 in rate units
- * over 200 000 draws. The same widened interval is used for the feasibility
- * test and for the measure, so a reported probability stays the measure of
- * what was actually accepted; it adds about 1e-5 relative. See DECISIONS.md
- * D-009.
+ * The game evaluates `rate * base` and then `+ 0.99999f` in 32-bit floating
+ * point while this runs in doubles. Each of those two roundings moves the value
+ * by at most half a unit in the last place at the magnitude of the price, so
+ * two units in the last place covers both with a factor of two to spare.
+ *
+ * A tolerance is needed rather than optional: a rate landing within an ulp of a
+ * bucket edge would otherwise reject the whole scenario, and that happens to
+ * roughly one week in seven thousand across twelve observations. It is scaled
+ * to the magnitude instead of being a flat constant because the ulp at a price
+ * of 600 is sixteen times the ulp at a price of 40, and a constant wide enough
+ * for the first would be needlessly wide for the second.
+ *
+ * The cost is that neighbouring price buckets overlap slightly, so the exact
+ * predictive distribution over next prices sums to a little more than one. The
+ * excess is `2 * TOLERANCE_ULPS * ulp32(price)` relative, that is four units in
+ * the last place: 3.1e-5 at a price of 100 and 2.4e-4 at 600.
+ * `tests/paths.test.ts` measures it. See DECISIONS.md D-009.
  */
-export const FLOAT32_RATE_TOLERANCE = 1e-6;
+const TOLERANCE_ULPS = 2;
+
+function float32Ulp(value: number): number {
+  const magnitude = Math.abs(value);
+  if (magnitude === 0) {
+    return FLOAT32_SMALLEST_SUBNORMAL;
+  }
+  return 2 ** (Math.floor(Math.log2(magnitude)) - FLOAT32_MANTISSA_BITS);
+}
+
+/** The half-width, in rate units, added at each end of an inverted interval. */
+export function rateTolerance(price: number, basePrice: number): number {
+  return (TOLERANCE_ULPS * float32Ulp(price)) / basePrice;
+}
 
 /**
  * `priceOffset` is what the generator added after rounding: zero everywhere
@@ -33,9 +58,10 @@ export function rateIntervalForPrice(
   priceOffset: number,
 ): Interval {
   const rounded = price - priceOffset;
+  const tolerance = rateTolerance(rounded, basePrice);
   return {
-    lo: (rounded - ROUNDING_ADDEND) / basePrice - FLOAT32_RATE_TOLERANCE,
-    hi: (rounded + (1 - ROUNDING_ADDEND)) / basePrice + FLOAT32_RATE_TOLERANCE,
+    lo: (rounded - ROUNDING_ADDEND) / basePrice - tolerance,
+    hi: (rounded + (1 - ROUNDING_ADDEND)) / basePrice + tolerance,
   };
 }
 

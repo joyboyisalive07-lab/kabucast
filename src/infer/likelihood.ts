@@ -13,6 +13,7 @@ import { decayStepBounds, rateBounds } from "../model/rate.ts";
 import type { Interval } from "../model/rate.ts";
 import type { Scenario } from "../model/types.ts";
 import { intersectionLength, rateIntervalForPrice } from "./inversion.ts";
+import { integrateRegions, peakRegions } from "./peak.ts";
 import { mass, restrict, scale, shiftedByUniform, uniformDensity } from "./piecewise.ts";
 
 /** One entry per selling slot; null where the player has not typed a price. */
@@ -75,53 +76,9 @@ export function decayRunProbability(
 }
 
 /**
- * A flank of the small spike is uniform on `[floor, x]` once the peak rate `x`
- * is fixed, so with `v = x - floor` the probability it satisfies its
- * constraint is `alpha + beta / v` on each of three regions. Returning the two
- * coefficients lets the peak integral stay a closed form.
- */
-interface FlankFactor {
-  readonly alpha: number;
-  readonly beta: number;
-}
-
-interface FlankShape {
-  /** Distance from the floor to the bottom of the constraint. */
-  readonly offset: number;
-  /** Width of the constraint above that. */
-  readonly width: number;
-}
-
-function flankShape(constraint: Interval | null, floor: number): FlankShape | null {
-  if (constraint === null) {
-    return null;
-  }
-  const bottom = Math.max(constraint.lo, floor);
-  return { offset: bottom - floor, width: Math.max(0, constraint.hi - bottom) };
-}
-
-function flankFactor(shape: FlankShape | null, v: number): FlankFactor {
-  if (shape === null) {
-    return { alpha: 1, beta: 0 };
-  }
-  if (v < shape.offset) {
-    return { alpha: 0, beta: 0 };
-  }
-  if (v <= shape.offset + shape.width) {
-    return { alpha: 1, beta: -shape.offset };
-  }
-  return { alpha: 0, beta: shape.width };
-}
-
-/**
- * The three correlated slots of the small spike.
- *
- * Conditional on the shared rate `x`, the two flanks are independent and
- * uniform on `[floor, x]`, so the joint probability is a one-dimensional
- * integral whose integrand is a quadratic over `(x - floor)^2`. Substituting
- * `v = x - floor` reduces every piece to `A0 + A1 / v + A2 / v^2`, which
- * integrates to `A0 v + A1 ln v - A2 / v`. See docs/ALGORITHM.md, "The
- * small-spike peak".
+ * The three correlated slots of the small spike. The decomposition it
+ * integrates lives in peak.ts, because the path sampler inverts the same
+ * regions. See docs/ALGORITHM.md, "The small-spike peak".
  */
 export function peakProbability(
   peak: Interval,
@@ -130,55 +87,8 @@ export function peakProbability(
   middle: Interval | null,
   lastFlank: Interval | null,
 ): number {
-  const lo = middle === null ? peak.lo : Math.max(peak.lo, middle.lo);
-  const hi = middle === null ? peak.hi : Math.min(peak.hi, middle.hi);
-  if (!(hi > lo)) {
-    return 0;
-  }
-
-  const first = flankShape(firstFlank, floor);
-  const last = flankShape(lastFlank, floor);
-  const vLo = lo - floor;
-  const vHi = hi - floor;
-
-  const cuts = [vLo, vHi];
-  for (const shape of [first, last]) {
-    if (shape === null) {
-      continue;
-    }
-    for (const cut of [shape.offset, shape.offset + shape.width]) {
-      if (cut > vLo && cut < vHi) {
-        cuts.push(cut);
-      }
-    }
-  }
-  cuts.sort((a, b) => a - b);
-
-  let integral = 0;
-  for (let i = 0; i < cuts.length - 1; i += 1) {
-    const from = at(cuts, i);
-    const to = at(cuts, i + 1);
-    if (!(to > from)) {
-      continue;
-    }
-    const middlePoint = (from + to) / 2;
-    const a = flankFactor(first, middlePoint);
-    const b = flankFactor(last, middlePoint);
-
-    integral += a.alpha * b.alpha * (to - from);
-
-    const reciprocal = a.alpha * b.beta + b.alpha * a.beta;
-    if (reciprocal !== 0) {
-      integral += reciprocal * Math.log(to / from);
-    }
-
-    const squared = a.beta * b.beta;
-    if (squared !== 0) {
-      integral -= squared * (1 / to - 1 / from);
-    }
-  }
-
-  return integral / (peak.hi - peak.lo);
+  const regions = peakRegions(peak, floor, firstFlank, middle, lastFlank);
+  return integrateRegions(regions) / (peak.hi - peak.lo);
 }
 
 export function scenarioLikelihood(

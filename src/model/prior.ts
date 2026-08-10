@@ -9,6 +9,7 @@
 
 import { at } from "./array.ts";
 import { CHANCE_MAX, CHANCE_MIN, TRANSITION_THRESHOLDS } from "./constants.ts";
+import { solveLinearSystem } from "./linear.ts";
 import { PATTERNS, PATTERN_SMALL_SPIKE } from "./types.ts";
 import type { Pattern } from "./types.ts";
 
@@ -30,55 +31,30 @@ export const TRANSITION_MATRIX: readonly (readonly number[])[] =
   TRANSITION_THRESHOLDS.map(rowFromThresholds);
 
 /**
- * Solves `pi = pi * P` with `sum(pi) = 1` by Gaussian elimination with partial
- * pivoting. Direct rather than iterated so that there is no convergence
- * threshold to justify, and the system is four by four.
+ * Solves `pi = pi * P` with `sum(pi) = 1`. The last balance equation is
+ * redundant with the others and is replaced by the normalisation, which is what
+ * makes the four by four system non-singular.
  */
 function solveStationary(matrix: readonly (readonly number[])[]): readonly number[] {
-  const n = matrix.length;
+  const size = matrix.length;
   const rows: number[][] = [];
-  for (let i = 0; i < n - 1; i += 1) {
+  for (let i = 0; i < size - 1; i += 1) {
     const row: number[] = [];
-    for (let j = 0; j < n; j += 1) {
+    for (let j = 0; j < size; j += 1) {
       row.push(at(at(matrix, j), i) - (i === j ? 1 : 0));
     }
-    row.push(0);
     rows.push(row);
   }
-  rows.push([...new Array<number>(n).fill(1), 1]);
+  rows.push(new Array<number>(size).fill(1));
 
-  for (let column = 0; column < n; column += 1) {
-    let pivot = column;
-    for (let candidate = column + 1; candidate < n; candidate += 1) {
-      if (Math.abs(at(at(rows, candidate), column)) > Math.abs(at(at(rows, pivot), column))) {
-        pivot = candidate;
-      }
-    }
-    const swap = at(rows, column);
-    rows[column] = at(rows, pivot);
-    rows[pivot] = swap;
+  const rhs = new Array<number>(size).fill(0);
+  rhs[size - 1] = 1;
 
-    const pivotRow = at(rows, column);
-    const pivotValue = at(pivotRow, column);
-    for (let j = column; j <= n; j += 1) {
-      pivotRow[j] = at(pivotRow, j) / pivotValue;
-    }
-    for (let r = 0; r < n; r += 1) {
-      if (r === column) {
-        continue;
-      }
-      const row = at(rows, r);
-      const factor = at(row, column);
-      if (factor === 0) {
-        continue;
-      }
-      for (let j = column; j <= n; j += 1) {
-        row[j] = at(row, j) - factor * at(pivotRow, j);
-      }
-    }
+  const solution = solveLinearSystem(rows, rhs);
+  if (solution === null) {
+    throw new Error("the transition matrix has no stationary distribution");
   }
-
-  return rows.map((row) => at(row, n));
+  return solution;
 }
 
 export const STATIONARY_PATTERN_PRIOR: readonly number[] = solveStationary(TRANSITION_MATRIX);

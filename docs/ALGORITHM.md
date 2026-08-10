@@ -283,18 +283,32 @@ relative error from replacing counting measure on that lattice with Lebesgue
 measure is of order `2^-23 * W * b`, below `10^-5`. It is recorded here and
 otherwise ignored.
 
-**Why a tolerance is applied anyway.** The game computes `r * b + 0.99999f` in
-32-bit floating point on ARM; kabucast computes in 64-bit doubles. Near an
-interval endpoint the two can disagree in the last place, and the consequence is
-not a small error in a probability but a scenario rejected outright. kabucast
-widens each inverted interval by a tolerance derived from the 32-bit unit in the
-last place at the magnitude involved, and uses the *same* widened interval for
-both the feasibility test and the measure, so the reported probability stays the
-measure of the region actually accepted. The added measure is of order `10^-5`
-relative. S2 handles the same problem differently, by retrying with a
-"fudge factor" of up to 5 whole bells and clamping the observed price into the
-predicted range; its own source marks the probability consequences of that as an
-open question (S2 L357, L408, L461, L500).
+**Why a tolerance is applied anyway.** The game computes `r * b` and then
+`+ 0.99999f` in 32-bit floating point on ARM; kabucast computes in 64-bit
+doubles. Each of those two roundings moves the value by up to half a unit in the
+last place at the magnitude of the price, so near a bucket edge the two
+disagree, and the consequence is not a small error in a probability but a
+scenario rejected outright. That is not a rare event to be waved away: the
+chance of landing within an ulp of an edge is about `price * 2^-23` per
+observation, so across twelve observations roughly one week in seven thousand
+would be declared impossible.
+
+kabucast widens each inverted interval by two units in the last place at the
+price, scaled to the magnitude rather than fixed, since the ulp at a price of
+600 is sixteen times the ulp at 40. The *same* widened interval is used for the
+feasibility test and for the measure, so a reported probability stays the
+measure of the region actually accepted.
+
+The cost is that neighbouring buckets overlap, so the exact predictive
+distribution over the next price sums to slightly more than one, by four units
+in the last place relative: `3.1e-5` at a price of 100 and `2.4e-4` at 600.
+`tests/paths.test.ts` computes that predictive distribution from marginal
+likelihood ratios and measures the excess.
+
+S2 handles the same problem differently, by retrying with a "fudge factor" of up
+to 5 whole bells and clamping the observed price into the predicted range; its
+own source marks the probability consequences of that as an open question
+(S2 L357, L408, L461, L500).
 
 ### Independent slots
 

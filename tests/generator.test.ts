@@ -22,6 +22,7 @@ import {
   randint,
   randUnit,
 } from "../src/model/generator.ts";
+import { rateTolerance } from "../src/infer/inversion.ts";
 import { TRANSITION_MATRIX } from "../src/model/prior.ts";
 import { decayStepBounds, rateBounds } from "../src/model/rate.ts";
 import { segmentLength } from "../src/model/scenario.ts";
@@ -90,24 +91,25 @@ test("drawRate starts at the origin and stays inside its bounds", () => {
 });
 
 /**
- * The inversion in ALGORITHM.md maps a price back to a half-open rate
- * interval of width 1/base. The generator rounds `rate * base` through
- * float32 while the inversion works in doubles, so this measures how far
- * outside the interval the true rate can fall. The bound it establishes is
- * the tolerance the likelihood applies.
+ * The inversion in ALGORITHM.md maps a price back to a half-open rate interval
+ * of width 1/base. The generator rounds `rate * base` through float32 while the
+ * inversion works in doubles, so the true rate can fall outside. This measures
+ * that excursion against the tolerance the likelihood actually applies, and
+ * fails if the tolerance is ever not enough.
  */
-test("the documented inversion contains the rate that produced the price", () => {
+test("the tolerance covers every excursion the float32 rounding can cause", () => {
   const rng = createRng(4242n);
-  let worst = 0;
-  for (let i = 0; i < 200_000; i += 1) {
+  let worstFraction = 0;
+  for (let i = 0; i < 500_000; i += 1) {
     const basePrice = randint(rng, BASE_PRICE_MIN, BASE_PRICE_MAX);
     const rate = Math.fround(0.4 + rng.nextFloat() * 5.6);
     const price = priceFromRate(rate, basePrice);
     const lo = (price - 0.99999) / basePrice;
     const hi = (price + 0.00001) / basePrice;
-    worst = Math.max(worst, lo - rate, rate - hi);
+    const tolerance = rateTolerance(price, basePrice);
+    worstFraction = Math.max(worstFraction, (lo - rate) / tolerance, (rate - hi) / tolerance);
   }
-  ok(worst < 1e-6, `rate fell ${worst} outside the inverted interval`);
+  ok(worstFraction < 1, `worst excursion used ${worstFraction} of the tolerance`);
 });
 
 test("drawBasePrice is uniform over 90 to 110", () => {

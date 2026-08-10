@@ -8,7 +8,7 @@ import {
   peakProbability,
   scenarioLikelihood,
 } from "../src/infer/likelihood.ts";
-import { rateIntervalForPrice } from "../src/infer/inversion.ts";
+import { rateIntervalForPrice, rateTolerance } from "../src/infer/inversion.ts";
 import { drawBasePrice, drawScenario, drawPrices } from "../src/model/generator.ts";
 import { createRng } from "../src/model/rng.ts";
 import type { Rng } from "../src/model/rng.ts";
@@ -248,16 +248,18 @@ test("the small spike peak volume agrees with a sampled estimate", () => {
   }
 });
 
-test("the inverted interval has the width of one bell", () => {
+test("the inverted interval has the width of one bell plus the tolerance", () => {
   for (const basePrice of [90, 100, 110]) {
     for (const price of [40, 87, 100, 250, 600]) {
       const interval = rateIntervalForPrice(price, basePrice, 0);
       const width = interval.hi - interval.lo;
-      // One bell in rate units, plus the float32 tolerance at both ends.
-      ok(
-        Math.abs(width - (1 / basePrice + 2e-6)) < 1e-9,
-        `base ${basePrice} price ${price}: width ${width}`,
-      );
+      const expected = 1 / basePrice + 2 * rateTolerance(price, basePrice);
+      ok(Math.abs(width - expected) < 1e-14, `base ${basePrice} price ${price}: width ${width}`);
+      // The tolerance stays far below the bucket it widens: four units in the
+      // last place of a float32 at the price, so 3.1e-5 at 100 and 2.4e-4 at
+      // 600 relative to the bucket.
+      const overlap = 2 * rateTolerance(price, basePrice) * basePrice;
+      ok(overlap < 3e-4, `price ${price} widens its bucket by ${overlap}`);
     }
   }
 });

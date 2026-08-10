@@ -90,17 +90,22 @@ export function shiftPolynomial(coefficients: readonly number[], delta: number):
   return shifted;
 }
 
+/**
+ * `integral of P(u) du` from zero to `to`, in the piece's local basis. Horner
+ * form on the antiderivative: this runs inside the bisection of every sampled
+ * path, so the loop avoids both repeated powers and the checked accessor.
+ */
+function integralFromZero(coefficients: readonly number[], to: number): number {
+  let accumulated = 0;
+  for (let m = coefficients.length - 1; m >= 0; m -= 1) {
+    accumulated = accumulated * to + (coefficients[m] ?? 0) / (m + 1);
+  }
+  return accumulated * to;
+}
+
 /** `integral of P(u) du` from `from` to `to`, both in the piece's local basis. */
 function definiteIntegral(coefficients: readonly number[], from: number, to: number): number {
-  let total = 0;
-  let fromPower = from;
-  let toPower = to;
-  for (let m = 0; m < coefficients.length; m += 1) {
-    fromPower *= m === 0 ? 1 : from;
-    toPower *= m === 0 ? 1 : to;
-    total += (at(coefficients, m) * (toPower - fromPower)) / (m + 1);
-  }
-  return total;
+  return integralFromZero(coefficients, to) - integralFromZero(coefficients, from);
 }
 
 export function uniformDensity(lo: number, hi: number): PiecewisePolynomial {
@@ -132,6 +137,77 @@ export function mass(density: PiecewisePolynomial, lo: number, hi: number): numb
 export function totalMass(density: PiecewisePolynomial): number {
   const bounds = support(density);
   return mass(density, bounds.lo, bounds.hi);
+}
+
+/**
+ * Forty halvings of a piece narrow the answer to about 1e-12 of its width,
+ * which is far below the precision anything downstream reads back out.
+ */
+const QUANTILE_BISECTION_STEPS = 40;
+
+/**
+ * A density with its per-piece masses already accumulated, so that drawing a
+ * value costs one search and one bisection instead of re-integrating every
+ * piece. Path sampling calls this thousands of times per recompute against an
+ * unchanging density, which is what makes the precomputation worth having.
+ */
+export interface PreparedQuantile {
+  readonly density: PiecewisePolynomial;
+  readonly cumulative: Float64Array;
+}
+
+export function prepareQuantile(density: PiecewisePolynomial): PreparedQuantile {
+  const cumulative = new Float64Array(density.pieces.length);
+  let running = 0;
+  for (let i = 0; i < density.pieces.length; i += 1) {
+    running += integralFromZero(
+      at(density.pieces, i),
+      at(density.breaks, i + 1) - at(density.breaks, i),
+    );
+    cumulative[i] = running;
+  }
+  return { density, cumulative };
+}
+
+/**
+ * The point below which the given fraction of the mass lies.
+ *
+ * Bisection rather than Newton: the integral is monotone by construction but
+ * cancellation in a degree-eleven piece can make it very slightly non-monotone
+ * in the last place, which derails a derivative method and not this one.
+ */
+export function quantileFrom(prepared: PreparedQuantile, fraction: number): number {
+  const { density, cumulative } = prepared;
+  const pieces = density.pieces.length;
+  const total = cumulative[pieces - 1] ?? 0;
+  const target = Math.min(Math.max(fraction, 0), 1) * total;
+
+  let index = 0;
+  let high = pieces - 1;
+  while (index < high) {
+    const middle = (index + high) >> 1;
+    if ((cumulative[middle] ?? 0) < target) {
+      index = middle + 1;
+    } else {
+      high = middle;
+    }
+  }
+
+  const left = at(density.breaks, index);
+  const coefficients = at(density.pieces, index);
+  const within = target - (index === 0 ? 0 : (cumulative[index - 1] ?? 0));
+
+  let lo = 0;
+  let hi = at(density.breaks, index + 1) - left;
+  for (let step = 0; step < QUANTILE_BISECTION_STEPS; step += 1) {
+    const middle = (lo + hi) / 2;
+    if (integralFromZero(coefficients, middle) < within) {
+      lo = middle;
+    } else {
+      hi = middle;
+    }
+  }
+  return left + (lo + hi) / 2;
 }
 
 export function scale(density: PiecewisePolynomial, factor: number): PiecewisePolynomial {
