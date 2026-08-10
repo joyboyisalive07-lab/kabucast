@@ -133,3 +133,40 @@ out of range, which covers an uninitialised save. A player selecting last week's
 pattern has one to select, and a player who has never bought is covered by the
 first-time-buyer rule, so exposing a fifth option would offer a state no user
 can be in. Unknown previous pattern is handled by D-007 instead.
+
+## Phase 2 — the generative model
+
+### D-011 The generator reproduces the original's arithmetic but not its bit stream
+
+Two things could be meant by implementing the generator "exactly". kabucast does
+one and not the other, deliberately.
+
+Reproduced: the uniform draw sits on the same 2^-23 lattice, every rate
+operation is rounded through float32 with `Math.fround`, the two subtractions of
+a decay step stay separate because the original performs them separately, and
+the rounding rule is `(int)(v + 0.99999f)` rather than a ceiling. This matters
+because the simulated corpus is what the inference is judged against; a
+simulator that rounded differently would let a rounding bug pass calibration.
+
+Not reproduced: `sead::Random` itself. kabucast draws from its own generator in
+the original's draw order, so each draw consumes what the original consumed, but
+the bit stream differs. A player cannot observe the game's seed, so nothing in
+the product depends on matching it, and the distributions are identical either
+way.
+
+The one consequence worth recording is measured rather than assumed. Because the
+game computes `rate * base` in float32 and the inversion works in doubles, the
+true rate can fall outside the inverted interval. `tests/generator.test.ts`
+measures this over 200 000 draws and the excursion stays below 1e-6 in rate
+units, which is the tolerance the likelihood will apply.
+
+### D-012 One scenario builder, shared by the simulator and the enumerator
+
+`buildScenario` is the only place that turns phase-length draws into segments.
+The simulator samples parameters and calls it; the inference enumerates every
+parameter combination and calls the same function. A test samples 200 000
+scenarios per pattern and checks the empirical frequencies against the
+enumerated probabilities, so the two views cannot drift apart silently.
+
+Rejected: a separate hand-written table of scenarios for the inference. It would
+be faster to read and would eventually disagree with the generator.
