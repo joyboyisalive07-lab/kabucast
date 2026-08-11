@@ -34,7 +34,11 @@ export const ZH: Strings = {
   legendObserved: "已记录",
   legendPeak: "最可能的峰值时段",
   axisNote: "价格采用对数刻度",
-  readoutEmpty: "点击图表查看准确数字",
+  readoutEmpty: "点击图表或按方向键查看准确数字",
+  chartSummary:
+    "已记录 {total} 个价格中的 {recorded} 个。余下的半天仍可能落在 {low} 到 {high} 铃钱之间。",
+  chartPeak: "最可能的峰值：{slot}。",
+  chartKeyboardHint: "用左右方向键逐个查看每个半天。",
 
   recommendationHeading: "决定",
   sellNow: "现在卖",

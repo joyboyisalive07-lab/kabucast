@@ -6,6 +6,10 @@ on:
 
 permissions:
   contents: write
+  # Provenance is the only verifiable answer this project can give about where
+  # a binary came from; it cannot buy a code-signing certificate.
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -35,13 +39,27 @@ jobs:
           --distpath dist --workpath build/pyinstaller
           tools/kabucast_launcher.py
 
-      - name: Check the artifacts exist and are not empty
+      - name: Check the artifacts exist and are self-contained
         shell: bash
         run: |
           test -s dist/kabucast-offline.html
           test -s dist/kabucast.exe
           grep -q "<script type=\"module\">" dist/kabucast-offline.html
           ! grep -q 'src="./main.js"' dist/kabucast-offline.html
+          ! grep -q 'href="./styles.css"' dist/kabucast-offline.html
+
+      - name: Write checksums
+        shell: bash
+        run: |
+          cd dist
+          sha256sum kabucast-offline.html kabucast.exe > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/kabucast-offline.html
+            dist/kabucast.exe
 
       - name: Publish
         shell: bash
@@ -49,19 +67,37 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           cat > release-notes.md <<'NOTES'
-          Two artifacts, both self-contained.
+          Three files. Take whichever suits the machine you are on.
 
-          - `kabucast-offline.html` — the whole tool in one file. Open it from
-            your filesystem; no server and no network.
-          - `kabucast.exe` — carries that page inside itself and opens it in
-            your default browser.
+          | File | What it is |
+          | --- | --- |
+          | `kabucast-offline.html` | The whole tool in one file. Open it from your filesystem; no server, no network, no install. Works on a phone too. |
+          | `kabucast.exe` | The same page carried inside a small Windows program that opens it in your default browser. |
+          | `SHA256SUMS.txt` | Checksums for both. |
 
-          The hosted version is at https://joyboyisalive07-lab.github.io/kabucast/
-          and works offline after the first visit.
+          On a phone, use the hosted version at
+          https://joyboyisalive07-lab.github.io/kabucast/ and add it to your home
+          screen, or open the HTML file directly. There is nothing to install.
 
-          What the numbers mean, and how they were checked, is in
+          **Windows will warn about the executable.** It is unsigned. Removing
+          that warning needs a code-signing certificate issued to a verified
+          legal identity, which this project does not have and cannot fake; a
+          self-signed certificate changes nothing, because nothing trusts it.
+          What is offered instead is provenance you can check yourself:
+
+          ```
+          gh attestation verify kabucast.exe --repo joyboyisalive07-lab/kabucast
+          ```
+
+          That proves the file came out of the public build in this repository
+          and not from anywhere else. The checksums in `SHA256SUMS.txt` let you
+          confirm the download matches. If that is not enough, the HTML file
+          triggers no warning at all and does exactly the same thing.
+
+          How the numbers are computed, and how they were checked against a
+          million simulated weeks, is in
           [docs/CALIBRATION.md](https://github.com/joyboyisalive07-lab/kabucast/blob/main/docs/CALIBRATION.md).
           NOTES
           gh release create "${GITHUB_REF_NAME}" \
-            dist/kabucast-offline.html dist/kabucast.exe \
+            dist/kabucast-offline.html dist/kabucast.exe dist/SHA256SUMS.txt \
             --title "${GITHUB_REF_NAME}" --notes-file release-notes.md

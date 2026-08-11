@@ -53,6 +53,8 @@ test("every language keeps the placeholders its templates need", () => {
     "scenarioPeakAt",
     "scenarioFalls",
     "scenarioCount",
+    "chartSummary",
+    "chartPeak",
   ] as const;
   for (const [code, strings] of LANGUAGES) {
     for (const key of templated) {

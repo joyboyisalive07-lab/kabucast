@@ -34,7 +34,11 @@ export const JA: Strings = {
   legendObserved: "記録済み",
   legendPeak: "ピークの可能性が最も高い時間",
   axisNote: "価格は対数目盛です",
-  readoutEmpty: "グラフに触れると正確な数値が出ます",
+  readoutEmpty: "グラフに触れるか矢印キーを押すと正確な数値が出ます",
+  chartSummary:
+    "{total}件中{recorded}件の価格を記録済み。残りの半日は{low}ベルから{high}ベルの範囲に収まります。",
+  chartPeak: "ピークの可能性が最も高い時間：{slot}。",
+  chartKeyboardHint: "左右の矢印キーで半日ごとに読み取れます。",
 
   recommendationHeading: "判断",
   sellNow: "今すぐ売る",

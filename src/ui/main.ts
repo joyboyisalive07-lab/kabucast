@@ -26,6 +26,10 @@ import { renderInconsistent, renderPatterns, renderRecommendation, renderScenari
 
 const COPIED_FEEDBACK_MS = 1600;
 
+/** Enough of the forecast on screen to count as already visible. */
+const MINIMUM_VISIBLE_FORECAST = 160;
+const SHARED_LINK_MARGIN = 12;
+
 function element(id: string): HTMLElement {
   const node = document.getElementById(id);
   if (node === null) {
@@ -117,6 +121,30 @@ class Application {
 
     this.applyStaticStrings();
     this.applyHash();
+
+    // After two frames, so the chart has taken its height and the sections
+    // above the forecast have stopped moving. If the frames never arrive the
+    // page simply stays at the top, which is where it would have been anyway.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.revealForecastForSharedLink());
+    });
+  }
+
+  /**
+   * A link arrives with the prices already in it, so the reader did not type
+   * them and has no reason to be looking at the input fields. Bring the
+   * forecast up instead, but only when it is off screen, and never on a page
+   * opened empty.
+   */
+  private revealForecastForSharedLink(): void {
+    if (window.location.hash.replace(/^#/, "") === "" || this.chartSection.hidden) {
+      return;
+    }
+    const box = this.chartSection.getBoundingClientRect();
+    if (box.top <= window.innerHeight - MINIMUM_VISIBLE_FORECAST) {
+      return;
+    }
+    window.scrollTo({ top: window.scrollY + box.top - SHARED_LINK_MARGIN, behavior: "auto" });
   }
 
   private buildLanguageSelect(): void {

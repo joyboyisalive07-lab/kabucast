@@ -13,15 +13,22 @@
   --surface: #101316;
   --surface-raised: #171b1f;
   --border: #262c32;
+  /*
+   * Anything a finger or a caret lands on is outlined with this instead. A
+   * boundary that identifies a control has to carry 3:1 against what is on both
+   * sides of it; --border is a quarter of that and is for separating regions,
+   * not for saying "this is a field". Twelve price boxes on a phone in daylight
+   * is the case that decides it.
+   */
+  --border-interactive: #66707a;
   --text: #e6eaee;
   --text-muted: #949ea8;
   --accent: #5fd08a;
-  --accent-dim: #2c6b47;
   --invalid: #e0685f;
 
   --band-90: rgb(95 208 138 / 0.14);
   --band-50: rgb(95 208 138 / 0.28);
-  --edge: rgb(148 158 168 / 0.55);
+  --edge: rgb(170 180 190 / 0.7);
 
   --radius: 10px;
   --gap: 14px;
@@ -36,15 +43,15 @@
     --surface: #f6f7f8;
     --surface-raised: #ffffff;
     --border: #dde1e5;
+    --border-interactive: #7b848d;
     --text: #12171b;
     --text-muted: #5c6670;
     --accent: #17794a;
-    --accent-dim: #a8ddc0;
     --invalid: #b3261e;
 
     --band-90: rgb(23 121 74 / 0.13);
     --band-50: rgb(23 121 74 / 0.26);
-    --edge: rgb(92 102 112 / 0.55);
+    --edge: rgb(72 82 92 / 0.75);
   }
 }
 
@@ -179,7 +186,7 @@ select {
   padding: 9px 10px;
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-interactive);
   border-radius: 8px;
   font: inherit;
 }
@@ -299,7 +306,7 @@ button {
   padding: 8px 14px;
   border-radius: 8px;
   cursor: pointer;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-interactive);
   background: var(--surface);
   color: var(--text);
 }
@@ -314,6 +321,12 @@ button {
   display: block;
   width: 100%;
   touch-action: pan-y;
+  border-radius: var(--radius);
+}
+
+.chart svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .grid line {
@@ -331,8 +344,19 @@ button {
   fill: var(--band-90);
 }
 
+/*
+ * The inner band carries a drawn boundary, not just a heavier fill. Two
+ * translucencies of one hue differ here by about 1.8:1 in the dark scheme and
+ * 1.4:1 in the light one, which is below the threshold for a graphic that
+ * carries meaning and is the first difference lost to colour vision deficiency.
+ * The stroke is the accent at 1px; the median inside it is the same colour at
+ * 2px, and the two never touch, so weight and position tell them apart.
+ */
 .band-50 {
   fill: var(--band-50);
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-linejoin: round;
 }
 
 .median {
@@ -426,13 +450,16 @@ text.day-tick {
   flex: none;
 }
 
+/* The keys mirror the chart: the inner band is outlined in the accent because
+ * it is outlined there; the outer band takes the neutral that draws every
+ * limit, because its extent is all the swatch is claiming. */
 .swatch-90 {
   background: var(--band-90);
-  border: 1px solid var(--accent-dim);
+  border: 1px solid var(--edge);
 }
 .swatch-50 {
   background: var(--band-50);
-  border: 1px solid var(--accent-dim);
+  border: 1px solid var(--accent);
 }
 .swatch-median {
   height: 2px;
@@ -554,14 +581,21 @@ table.patterns tr.eliminated td {
   color: var(--text-muted);
 }
 
+/*
+ * Scaled rather than resized. Animating width puts four elements through layout
+ * on every keystroke; a transform is composited and touches neither layout nor
+ * paint. The ends are square because scaleX would stretch a corner radius into
+ * an ellipse as the bar gets short, and a short bar is the common case.
+ */
 .bar {
   display: block;
   height: 3px;
   margin-top: 4px;
-  border-radius: 2px;
   background: var(--accent);
-  width: calc(var(--share) * 100%);
-  transition: width 220ms ease-out;
+  width: 100%;
+  transform: scaleX(var(--share));
+  transform-origin: left center;
+  transition: transform 220ms ease-out;
 }
 
 /* Scenarios */
@@ -608,6 +642,21 @@ table.patterns tr.eliminated td {
 
 .colophon a {
   color: inherit;
+}
+
+/*
+ * The narrowest phones. Every pixel taken back from the page gutter and the
+ * panel padding goes to the chart, where twelve half-days are competing for
+ * width against a thumb.
+ */
+@media (max-width: 400px) {
+  body {
+    padding: 0 8px 40px;
+  }
+
+  .panel {
+    padding: 10px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

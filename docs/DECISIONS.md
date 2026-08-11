@@ -543,3 +543,52 @@ assets are fetched in parallel after the document, so a cold load lands near
 350 ms before the recompute, which is about 40 ms at a mobile width. With the
 service worker warm, `DOMContentLoaded` was 244 ms and the recommendation was on
 screen by the load event at 261 ms.
+
+### D-038 Local tooling is excluded through `.git/info/exclude`, not `.gitignore`
+
+A committed ignore file describes the workbench to everyone who reads the
+repository. Naming an editor or a helper directory there says something about
+how the work was done rather than what the work is, and it is the kind of detail
+that outlives its usefulness immediately.
+
+Build outputs stay in `.gitignore`, because anyone cloning the repository
+produces them too. Everything that only exists on one machine goes in
+`.git/info/exclude`, which is never committed.
+
+### D-039 The executable is unsigned and the documentation says why
+
+Windows warns about it. Three responses were considered.
+
+Signing properly needs an Authenticode certificate issued against a verified
+legal identity, which this project has no way to obtain. A self-signed
+certificate was rejected outright: the warning exists because a signature that
+vouches for itself proves nothing, so a self-signed build would carry the same
+warning while looking like it had been dealt with. Shipping the executable
+inside a zip was rejected for being worse than useless — it suppresses the
+browser's download prompt without changing a byte of what gets run.
+
+What is offered instead is provenance. Every release is built by the public
+workflow in this repository, each artifact carries a GitHub build attestation
+verifiable with `gh attestation verify`, and `SHA256SUMS.txt` covers the
+downloads. The README states the situation in one paragraph and then points at
+the HTML file, which raises no warning anywhere and runs on the phones the
+executable never could.
+
+### D-040 A phone gets an installable page, not a smaller program
+
+An executable cannot reach the platform most players hold while checking a
+price. The manifest makes the hosted page installable to a home screen, where it
+opens without browser chrome and keeps working with no signal, and the icon
+generator emits a full-bleed maskable variant so a launcher mask does not crop
+into transparent corners.
+
+The manifest is written by the build from the same list the icon generator
+produced, rather than kept as a file that would silently fall out of step.
+
+### D-041 A shared link opens on the forecast
+
+A link arrives with prices already in it, so the reader did not type them and
+has no reason to be looking at twelve empty fields. The forecast is scrolled up
+after two frames, once the chart has taken its height, and only when it is off
+screen. A page opened empty is left alone, and if the frames never arrive the
+page simply stays where it was.

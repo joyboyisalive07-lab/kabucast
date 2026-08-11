@@ -34,7 +34,11 @@ export const ES: Strings = {
   legendObserved: "anotado",
   legendPeak: "pico más probable",
   axisNote: "Precios en escala logarítmica",
-  readoutEmpty: "Toca el gráfico para ver cifras exactas",
+  readoutEmpty: "Toca el gráfico o pulsa una flecha para ver cifras exactas",
+  chartSummary:
+    "{recorded} de {total} precios anotados. Las medias jornadas que quedan aún pueden ir de {low} a {high} bayas.",
+  chartPeak: "Pico más probable: {slot}.",
+  chartKeyboardHint: "Usa las flechas izquierda y derecha para leer cada media jornada.",
 
   recommendationHeading: "Decisión",
   sellNow: "Vender ahora",

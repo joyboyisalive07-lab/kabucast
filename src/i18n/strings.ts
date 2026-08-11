@@ -41,6 +41,11 @@ export interface Strings {
   readonly legendPeak: string;
   readonly axisNote: string;
   readonly readoutEmpty: string;
+  /** Spoken description of the chart, for readers who cannot see it. */
+  readonly chartSummary: string;
+  /** Carries its own terminal punctuation; it is spoken between two sentences. */
+  readonly chartPeak: string;
+  readonly chartKeyboardHint: string;
 
   readonly recommendationHeading: string;
   readonly sellNow: string;
@@ -106,7 +111,11 @@ export const EN: Strings = {
   legendObserved: "Recorded",
   legendPeak: "Likeliest peak",
   axisNote: "Prices on a logarithmic scale",
-  readoutEmpty: "Touch the chart for exact numbers",
+  readoutEmpty: "Touch the chart or press an arrow key for exact numbers",
+  chartSummary:
+    "{recorded} of {total} prices recorded. Remaining half-days can still land between {low} and {high} bells.",
+  chartPeak: "Likeliest peak: {slot}.",
+  chartKeyboardHint: "Use the left and right arrow keys to read each half-day.",
 
   recommendationHeading: "Decision",
   sellNow: "Sell now",

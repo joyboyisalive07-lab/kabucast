@@ -34,7 +34,11 @@ export const DE: Strings = {
   legendObserved: "notiert",
   legendPeak: "wahrscheinlichster Höhepunkt",
   axisNote: "Preise auf logarithmischer Skala",
-  readoutEmpty: "Diagramm antippen für genaue Zahlen",
+  readoutEmpty: "Diagramm antippen oder Pfeiltaste drücken für genaue Zahlen",
+  chartSummary:
+    "{recorded} von {total} Preisen notiert. Die übrigen Halbtage können noch zwischen {low} und {high} Sternis liegen.",
+  chartPeak: "Wahrscheinlichster Höhepunkt: {slot}.",
+  chartKeyboardHint: "Mit den Pfeiltasten links und rechts jeden Halbtag durchgehen.",
 
   recommendationHeading: "Entscheidung",
   sellNow: "Jetzt verkaufen",

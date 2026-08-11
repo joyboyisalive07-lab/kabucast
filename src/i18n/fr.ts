@@ -34,7 +34,11 @@ export const FR: Strings = {
   legendObserved: "noté",
   legendPeak: "pic le plus probable",
   axisNote: "Prix sur une échelle logarithmique",
-  readoutEmpty: "Touchez le graphique pour les chiffres exacts",
+  readoutEmpty: "Touchez le graphique ou appuyez sur une flèche pour les chiffres exacts",
+  chartSummary:
+    "{recorded} prix sur {total} saisis. Les demi-journées restantes peuvent encore aller de {low} à {high} clochettes.",
+  chartPeak: "Pic le plus probable : {slot}.",
+  chartKeyboardHint: "Les flèches gauche et droite parcourent chaque demi-journée.",
 
   recommendationHeading: "Décision",
   sellNow: "Vendre maintenant",

@@ -8,8 +8,9 @@
       name="description"
       content="Turnip price predictor for Animal Crossing: New Horizons. Exact posterior probabilities and an optimal selling decision."
     />
-    <meta name="theme-color" content="#101316" />
-    <link rel="icon" href="./icon.svg" type="image/svg+xml" /><link rel="icon" href="./icon-32.png" sizes="32x32" /><link rel="apple-touch-icon" href="./icon-128.png" />
+    <meta name="theme-color" content="#f6f7f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101316" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" /><link rel="icon" href="./icon-32.png" sizes="32x32" /><link rel="apple-touch-icon" href="./icon-128.png" /><link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -33,7 +34,7 @@
       <section id="chart-section" class="panel">
         <h2 id="chart-heading"></h2>
         <div id="chart" class="chart"></div>
-        <p id="readout" class="readout"></p>
+        <p id="readout" class="readout" aria-live="polite" aria-atomic="true"></p>
         <p id="axis-note" class="axis-note"></p>
         <ul id="legend" class="legend"></ul>
       </section>

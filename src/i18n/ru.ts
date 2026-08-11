@@ -34,7 +34,11 @@ export const RU: Strings = {
   legendObserved: "записано",
   legendPeak: "вероятный пик",
   axisNote: "Цены по логарифмической шкале",
-  readoutEmpty: "Коснитесь графика, чтобы увидеть точные числа",
+  readoutEmpty: "Коснитесь графика или нажмите стрелку, чтобы увидеть точные числа",
+  chartSummary:
+    "Записано {recorded} из {total} цен. Оставшиеся полудни могут дать от {low} до {high} колокольчиков.",
+  chartPeak: "Вероятный пик: {slot}.",
+  chartKeyboardHint: "Стрелки влево и вправо читают каждую половину дня.",
 
   recommendationHeading: "Решение",
   sellNow: "Продавать",

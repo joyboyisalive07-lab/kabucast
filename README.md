@@ -112,23 +112,58 @@ one, which is the whole point.
 
 ## Using it
 
-**In a browser.** <https://joyboyisalive07-lab.github.io/kabucast/> — works
-offline after the first visit.
+**On a phone.** Open <https://joyboyisalive07-lab.github.io/kabucast/> and add
+it to your home screen. It then opens like an app and keeps working with no
+signal. This is the way most people should use it; there is nothing to install
+and nothing to trust.
 
-**As one file.** Download `kabucast-offline.html` from the
-[latest release](https://github.com/joyboyisalive07-lab/kabucast/releases/latest).
-It is about 76 KB, contains everything, and opens from your filesystem with no
-server and no network.
+**On a desktop.** The same address. Or download `kabucast-offline.html` from the
+[latest release](https://github.com/joyboyisalive07-lab/kabucast/releases/latest):
+one file, about 83 KB, everything inside it, opens straight from your
+filesystem.
 
-**As a program.** Download `kabucast.exe` from the same release and run it. It
-carries the page inside itself and opens it in your default browser.
+**As a Windows program.** `kabucast.exe` in the same release carries that page
+and opens it in your default browser. See the note below about the warning
+Windows shows.
 
 Enter prices as you learn them. Focus moves on by itself, and you can paste a
 whole row at once. The link in the address bar always holds your current input,
-so the copy button gives you something you can send to someone.
+so the copy button gives you something you can send to someone, and a link
+someone sends you opens on the forecast rather than on empty boxes.
+
+The chart is reachable without a pointer: give it focus and the arrow keys walk
+it half-day by half-day, reading out the exact numbers. It carries a spoken
+summary of the week for readers who cannot see it.
 
 Seven languages: English, Russian, German, Spanish, French, Japanese, Simplified
 Chinese.
+
+## Why Windows warns about the executable
+
+Because it is unsigned, and that is worth saying plainly rather than working
+around.
+
+Removing the warning requires an Authenticode code-signing certificate issued to
+a verified legal identity. A self-signed certificate does nothing: the warning
+exists precisely because nothing trusts a signature that vouches for itself.
+Repackaging the program inside a zip file would hide the browser's download
+prompt without changing what you are running, which would be worse than the
+warning.
+
+What this project can offer instead is proof of where the file came from. Every
+release is built in public by the workflow in this repository, and each artifact
+carries a build attestation:
+
+```bash
+gh attestation verify kabucast.exe --repo joyboyisalive07-lab/kabucast
+```
+
+That checks the binary against the run that produced it. `SHA256SUMS.txt` in the
+release lets you confirm your download is intact.
+
+If none of that satisfies you, do not run it. `kabucast-offline.html` is the
+same tool, triggers no warning anywhere, and works on every platform including
+the phone the executable could never run on.
 
 ## Building from source
 
@@ -184,4 +219,4 @@ repository contains no assets from the game.
 
 ## License
 
-MIT, copyright joyboyisalive07-lab. See [LICENSE](LICENSE).
+MIT, copyright joy boy. See [LICENSE](LICENSE).

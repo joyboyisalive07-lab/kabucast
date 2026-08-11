@@ -56,6 +56,9 @@ const SUPERSAMPLE = 4;
 const PNG_SIZES = [16, 32, 48, 64, 128, 256];
 const ICO_SIZES = [16, 32, 48, 256];
 
+/** Android asks for 512 for the icon it puts on a home screen. */
+const MASKABLE_SIZE = 512;
+
 function distanceToSegment(
   px: number,
   py: number,
@@ -99,8 +102,18 @@ function insidePolyline(points: readonly (readonly [number, number])[], x: numbe
   return false;
 }
 
+/**
+ * A launcher mask crops the icon to its own shape, so a maskable variant fills
+ * the square edge to edge; rounded corners here would leave transparent wedges
+ * showing through a square mask. The mark sits inside the middle 70 per cent,
+ * which is within the safe zone a circular mask leaves.
+ */
+function renderMaskable(size: number): Uint8Array {
+  return render(size, true);
+}
+
 /** Straight alpha RGBA, painted tile then mark then peak. */
-function render(size: number): Uint8Array {
+function render(size: number, fullBleed = false): Uint8Array {
   const pixels = new Uint8Array(size * size * 4);
   const step = CANVAS / size / SUPERSAMPLE;
   const origin = step / 2;
@@ -115,7 +128,7 @@ function render(size: number): Uint8Array {
         for (let sx = 0; sx < SUPERSAMPLE; sx += 1) {
           const x = (column * CANVAS) / size + origin + sx * step;
           const y = (row * CANVAS) / size + origin + sy * step;
-          if (!insideRoundedTile(x, y)) {
+          if (!fullBleed && !insideRoundedTile(x, y)) {
             continue;
           }
           tile += 1;
@@ -305,6 +318,10 @@ export function writeIcons(): { readonly svg: string; readonly icoBytes: number 
     writeFileSync(`dist/icon-${size}.png`, rendered.get(size) ?? new Uint8Array(0));
   }
   writeFileSync("docs/img/icon-256.png", rendered.get(256) ?? new Uint8Array(0));
+  writeFileSync(
+    `dist/icon-maskable-${MASKABLE_SIZE}.png`,
+    encodePng(MASKABLE_SIZE, renderMaskable(MASKABLE_SIZE)),
+  );
 
   const ico = encodeIco(
     ICO_SIZES.map((size) => ({ size, png: rendered.get(size) ?? new Uint8Array(0) })),

@@ -18,7 +18,7 @@
 import { at } from "../model/array.ts";
 import { SELLING_SLOT_COUNT } from "../model/constants.ts";
 import type { Strings } from "../i18n/strings.ts";
-import { bells, shortDayLabel, slotLabel } from "./format.ts";
+import { bells, fill, shortDayLabel, slotLabel } from "./format.ts";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -26,6 +26,23 @@ const MARGIN_LEFT = 40;
 const MARGIN_RIGHT = 10;
 const MARGIN_TOP = 12;
 const MARGIN_BOTTOM = 26;
+
+/*
+ * On a phone the horizontal margins are the difference between half-days you
+ * can hit with a thumb and half-days you cannot. Twelve slots across a 375px
+ * screen leave about 27px each once the axis gutter is cut to what the widest
+ * tick actually needs -- three monospaced digits at 11px, plus the 6px the
+ * label already stands off by. At the wide setting the gutter is generous
+ * because there is room to be generous.
+ */
+const NARROW_WIDTH = 420;
+const MARGIN_LEFT_NARROW = 32;
+const MARGIN_RIGHT_NARROW = 6;
+
+/* Only a floor against degenerate geometry before the first layout. Above it
+ * the viewBox tracks the real element width, so one unit stays one pixel and
+ * the type is the size it claims to be instead of being scaled to fit. */
+const MIN_WIDTH = 240;
 
 const TRANSITION_MS = 220;
 const SETTLE_GRACE_MS = 80;
@@ -122,6 +139,8 @@ export class Chart {
 
   private width = 720;
   private height = 320;
+  private marginLeft = MARGIN_LEFT;
+  private marginRight = MARGIN_RIGHT;
   private scaleLo = 20;
   private scaleHi = 200;
 
@@ -134,6 +153,7 @@ export class Chart {
 
   private data: ChartData | null = null;
   private hovered: number | null = null;
+  private staticKey = "";
 
   private readonly host: HTMLElement;
   private readonly readout: HTMLElement;
@@ -143,9 +163,12 @@ export class Chart {
     this.host = host;
     this.readout = readout;
     this.strings = strings;
+    // Focusable, because every exact number the chart holds is reachable only
+    // through the cursor. A pointer is not the only way anyone reads this.
     this.svg = element("svg", {
       viewBox: "0 0 720 320",
       role: "img",
+      tabindex: "0",
       preserveAspectRatio: "xMidYMid meet",
     });
     this.gridGroup = element("g", { class: "grid" });
@@ -182,6 +205,7 @@ export class Chart {
       this.hovered = null;
       this.drawCursor();
     });
+    this.svg.addEventListener("keydown", (event) => this.onKey(event));
 
     const observer = new ResizeObserver(() => this.measure());
     observer.observe(this.host);
@@ -194,17 +218,117 @@ export class Chart {
       this.hovered === null ? strings.readoutEmpty : this.readout.textContent;
     this.drawStatic();
     this.drawCursor();
+    this.describe();
+  }
+
+  /**
+   * The chart's accessible name. A reader who cannot see the fan still gets the
+   * shape of the week from it: how much is known, what the unknown half-days
+   * can still do, and where the peak is likeliest. The per-slot numbers arrive
+   * through the readout, which is a live region.
+   */
+  private describe(): void {
+    const strings = this.strings;
+    const data = this.data;
+    if (data === null) {
+      this.svg.setAttribute("aria-label", strings.chartHeading);
+      return;
+    }
+
+    let recorded = 0;
+    let low = Infinity;
+    let high = 0;
+    for (let slot = 0; slot < SELLING_SLOT_COUNT; slot += 1) {
+      if (at(data.observed, slot) !== null) {
+        recorded += 1;
+        continue;
+      }
+      low = Math.min(low, at(data.minimum, slot));
+      high = Math.max(high, at(data.maximum, slot));
+    }
+
+    // The section's own heading sits directly above the chart and is already
+    // announced, so the name starts at the summary rather than repeating it.
+    const parts: string[] = [];
+    if (high === 0) {
+      parts.push(strings.nothingLeft);
+    } else {
+      parts.push(
+        fill(strings.chartSummary, {
+          recorded: String(recorded),
+          total: String(SELLING_SLOT_COUNT),
+          low: bells(low, strings.locale),
+          high: bells(high, strings.locale),
+        }),
+      );
+      if (data.peakSlot !== null) {
+        const label = slotLabel(data.peakSlot, strings.dayNames, strings.morning, strings.afternoon);
+        parts.push(fill(strings.chartPeak, { slot: label }));
+      }
+      parts.push(strings.chartKeyboardHint);
+    }
+    this.svg.setAttribute("aria-label", parts.join(" "));
+  }
+
+  /** The slot a keyboard reader starts from: the most recent thing they typed. */
+  private startSlot(): number {
+    const data = this.data;
+    if (data !== null) {
+      for (let slot = SELLING_SLOT_COUNT - 1; slot >= 0; slot -= 1) {
+        if (at(data.observed, slot) !== null) {
+          return slot;
+        }
+      }
+    }
+    return 0;
+  }
+
+  private onKey(event: KeyboardEvent): void {
+    if (this.data === null) {
+      return;
+    }
+    const last = SELLING_SLOT_COUNT - 1;
+    const current = this.hovered;
+    let next: number | null;
+    switch (event.key) {
+      case "ArrowRight":
+      case "ArrowUp":
+        next = current === null ? this.startSlot() : Math.min(last, current + 1);
+        break;
+      case "ArrowLeft":
+      case "ArrowDown":
+        next = current === null ? this.startSlot() : Math.max(0, current - 1);
+        break;
+      case "Home":
+        next = 0;
+        break;
+      case "End":
+        next = last;
+        break;
+      case "Escape":
+        next = null;
+        break;
+      default:
+        return;
+    }
+    // Only after a key we actually handle, so the page still scrolls when the
+    // chart has focus and the reader presses something else.
+    event.preventDefault();
+    this.hovered = next;
+    this.drawCursor();
   }
 
   private measure(): void {
     const rect = this.host.getBoundingClientRect();
-    const width = Math.max(280, Math.round(rect.width));
+    const width = Math.max(MIN_WIDTH, Math.round(rect.width));
     const height = Math.round(Math.min(340, Math.max(220, width * 0.52)));
     if (width === this.width && height === this.height) {
       return;
     }
     this.width = width;
     this.height = height;
+    this.marginLeft = width < NARROW_WIDTH ? MARGIN_LEFT_NARROW : MARGIN_LEFT;
+    this.marginRight = width < NARROW_WIDTH ? MARGIN_RIGHT_NARROW : MARGIN_RIGHT;
     this.svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
     this.svg.setAttribute("height", String(height));
     this.drawStatic();
@@ -217,8 +341,8 @@ export class Chart {
   }
 
   private x(slot: number): number {
-    const span = this.width - MARGIN_LEFT - MARGIN_RIGHT;
-    return MARGIN_LEFT + (span * slot) / (SELLING_SLOT_COUNT - 1);
+    const span = this.width - this.marginLeft - this.marginRight;
+    return this.marginLeft + (span * slot) / (SELLING_SLOT_COUNT - 1);
   }
 
   private y(price: number): number {
@@ -250,7 +374,18 @@ export class Chart {
     return parts.join(" ");
   }
 
+  /**
+   * The axis only changes when the scale, the size or the language changes, and
+   * none of those happen on a keystroke. Rebuilding eighteen text nodes for
+   * every digit typed was work nobody could see.
+   */
   private drawStatic(): void {
+    const key = `${this.width}x${this.height}:${this.scaleLo}-${this.scaleHi}:${this.strings.locale}`;
+    if (key === this.staticKey) {
+      return;
+    }
+    this.staticKey = key;
+
     this.gridGroup.replaceChildren();
     this.labelGroup.replaceChildren();
 
@@ -260,14 +395,14 @@ export class Chart {
       const y = this.y(tick);
       this.gridGroup.append(
         element("line", {
-          x1: String(MARGIN_LEFT),
-          x2: String(this.width - MARGIN_RIGHT),
+          x1: String(this.marginLeft),
+          x2: String(this.width - this.marginRight),
           y1: y.toFixed(2),
           y2: y.toFixed(2),
         }),
       );
       const label = element("text", {
-        x: String(MARGIN_LEFT - 6),
+        x: String(this.marginLeft - 6),
         y: (y + 4).toFixed(2),
         "text-anchor": "end",
         class: "tick",
@@ -337,6 +472,7 @@ export class Chart {
     this.startAnimation();
     this.drawMarkers();
     this.drawCursor();
+    this.describe();
   }
 
   private settle(): void {
@@ -411,8 +547,8 @@ export class Chart {
     const data = this.data;
     if (data?.basePrice != null) {
       const y = this.y(data.basePrice);
-      this.baseLine.setAttribute("x1", String(MARGIN_LEFT));
-      this.baseLine.setAttribute("x2", String(this.width - MARGIN_RIGHT));
+      this.baseLine.setAttribute("x1", String(this.marginLeft));
+      this.baseLine.setAttribute("x2", String(this.width - this.marginRight));
       this.baseLine.setAttribute("y1", y.toFixed(2));
       this.baseLine.setAttribute("y2", y.toFixed(2));
       this.baseLine.removeAttribute("hidden");
@@ -462,8 +598,8 @@ export class Chart {
       return;
     }
     const x = ((event.clientX - rect.left) / rect.width) * this.width;
-    const span = this.width - MARGIN_LEFT - MARGIN_RIGHT;
-    const raw = ((x - MARGIN_LEFT) / span) * (SELLING_SLOT_COUNT - 1);
+    const span = this.width - this.marginLeft - this.marginRight;
+    const raw = ((x - this.marginLeft) / span) * (SELLING_SLOT_COUNT - 1);
     this.hovered = Math.min(SELLING_SLOT_COUNT - 1, Math.max(0, Math.round(raw)));
     this.drawCursor();
   }

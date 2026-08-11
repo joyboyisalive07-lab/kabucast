@@ -33,7 +33,15 @@ interface ServiceWorkerScope {
 const scope = globalThis as unknown as ServiceWorkerScope;
 
 const CACHE_NAME = `kabucast-${__CACHE_VERSION__}`;
-const SHELL = ["./", "./index.html", "./main.js", "./styles.css", "./icon.svg", "./icon-32.png"];
+const SHELL = [
+  "./",
+  "./index.html",
+  "./main.js",
+  "./styles.css",
+  "./icon.svg",
+  "./icon-32.png",
+  "./manifest.webmanifest",
+];
 
 scope.addEventListener("install", (event) => {
   event.waitUntil(
