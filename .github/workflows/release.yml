@@ -98,6 +98,18 @@ jobs:
           million simulated weeks, is in
           [docs/CALIBRATION.md](https://github.com/joyboyisalive07-lab/kabucast/blob/main/docs/CALIBRATION.md).
           NOTES
-          gh release create "${GITHUB_REF_NAME}" \
-            dist/kabucast-offline.html dist/kabucast.exe dist/SHA256SUMS.txt \
-            --title "${GITHUB_REF_NAME}" --notes-file release-notes.md
+          # Idempotent, because a tag can legitimately be moved onto a
+          # corrected commit before anyone has downloaded anything. Creating
+          # afresh is the normal path; replacing the assets is the correction
+          # path, and it must not leave the previous build attached.
+          files="dist/kabucast-offline.html dist/kabucast.exe dist/SHA256SUMS.txt"
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release edit "${GITHUB_REF_NAME}" \
+              --title "${GITHUB_REF_NAME}" --notes-file release-notes.md
+            # shellcheck disable=SC2086
+            gh release upload "${GITHUB_REF_NAME}" $files --clobber
+          else
+            # shellcheck disable=SC2086
+            gh release create "${GITHUB_REF_NAME}" $files \
+              --title "${GITHUB_REF_NAME}" --notes-file release-notes.md
+          fi
