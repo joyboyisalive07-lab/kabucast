@@ -68,8 +68,8 @@ export const DE: Strings = {
   inconsistentBody:
     "Kein Muster im Spiel erzeugt diese Folge, also gibt es nichts zu rechnen. Prüf deine Zahlen.",
   inconsistentSlot:
-    "Der Preis am {slot} kann nicht auf die davor folgen.",
-  inconsistentClear: "{slot} leeren",
+    "Der Preis „{slot}“ kann nicht auf die davor folgen.",
+  inconsistentClear: "„{slot}“ leeren",
   invalidPrice: "Ganze Zahl zwischen 1 und 999",
   invalidBasePrice: "Ganze Zahl zwischen 90 und 110",
 };

@@ -68,8 +68,8 @@ export const FR: Strings = {
   inconsistentBody:
     "Aucun motif du jeu ne produit cette suite, il n'y a donc rien à calculer. Vérifiez vos nombres.",
   inconsistentSlot:
-    "Le prix de {slot} ne peut pas suivre les précédents.",
-  inconsistentClear: "Effacer {slot}",
+    "Le prix « {slot} » ne peut pas suivre les précédents.",
+  inconsistentClear: "Effacer « {slot} »",
   invalidPrice: "Nombre entier entre 1 et 999",
   invalidBasePrice: "Nombre entier entre 90 et 110",
 };
