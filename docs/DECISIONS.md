@@ -505,3 +505,41 @@ which is nearly everywhere, and corrects the common claim that Turnip Prophet
 assumes independence inside falling phases. Overstating the difference would
 have been easier and would have failed the same honesty rule as an overconfident
 probability.
+
+## Phase 10 — publication
+
+### D-035 The release is published by the gh CLI, not by a third-party action
+
+`gh` is already on the runner and is maintained by the same people as the
+platform. A third-party release action would be a fourth dependency, in the
+supply-chain sense that matters most: it runs with a token that can write to the
+repository.
+
+The workflow asserts the artifacts before publishing rather than after: both
+files non-empty, the offline page carrying an inline module script and no
+reference to an external one. A release with a broken artifact is worse than no
+release, and the check costs four lines.
+
+### D-036 The published artifacts were verified by downloading them back
+
+Not by trusting the build. `kabucast-offline.html` was downloaded from the
+release and hashed against the local build: identical, which also shows the
+bundle is reproducible across machines. It was then served from a directory
+where its relative assets do not exist and made to compute, issuing zero
+resource requests.
+
+`kabucast.exe` was downloaded and run from a directory whose path contains a
+space, with the temporary directory also pointed at one. It dropped a
+byte-identical copy of the page and opened
+`file:///.../release%20check/temp%20target%20with%20spaces/...`, which is the
+percent-encoding that makes such a path work at all.
+
+### D-037 The cold-load claim is a measurement, not an estimate
+
+The site is four requests and 76 KB in total: 2.3 KB of HTML, 9.6 KB of CSS,
+63.9 KB of script, 0.5 KB of icon. Fetched cold over the network from GitHub
+Pages, each round trip took about 170 ms on the connection measured, and the two
+assets are fetched in parallel after the document, so a cold load lands near
+350 ms before the recompute, which is about 40 ms at a mobile width. With the
+service worker warm, `DOMContentLoaded` was 244 ms and the recommendation was on
+screen by the load event at 261 ms.
