@@ -1,0 +1,67 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # Windows because the executable is a Windows executable; the offline page
+    # is byte-identical wherever it is built.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyinstaller
+      - name: Build the executable
+        run: >
+          python -m PyInstaller --onefile --noconsole --name kabucast
+          --icon dist/kabucast.ico
+          --add-data "dist/kabucast-offline.html;."
+          --distpath dist --workpath build/pyinstaller
+          tools/kabucast_launcher.py
+
+      - name: Check the artifacts exist and are not empty
+        shell: bash
+        run: |
+          test -s dist/kabucast-offline.html
+          test -s dist/kabucast.exe
+          grep -q "<script type=\"module\">" dist/kabucast-offline.html
+          ! grep -q 'src="./main.js"' dist/kabucast-offline.html
+
+      - name: Publish
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cat > release-notes.md <<'NOTES'
+          Two artifacts, both self-contained.
+
+          - `kabucast-offline.html` — the whole tool in one file. Open it from
+            your filesystem; no server and no network.
+          - `kabucast.exe` — carries that page inside itself and opens it in
+            your default browser.
+
+          The hosted version is at https://joyboyisalive07-lab.github.io/kabucast/
+          and works offline after the first visit.
+
+          What the numbers mean, and how they were checked, is in
+          [docs/CALIBRATION.md](https://github.com/joyboyisalive07-lab/kabucast/blob/main/docs/CALIBRATION.md).
+          NOTES
+          gh release create "${GITHUB_REF_NAME}" \
+            dist/kabucast-offline.html dist/kabucast.exe \
+            --title "${GITHUB_REF_NAME}" --notes-file release-notes.md

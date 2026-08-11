@@ -146,7 +146,7 @@ npm run build
 executable needs Python with PyInstaller:
 
 ```bash
-python -m PyInstaller --onefile --noconsole --name kabucast --icon dist/kabucast.ico --add-data "dist/kabucast-offline.html;." --distpath dist --workpath build/pyinstaller --specpath build tools/kabucast_launcher.py
+python -m PyInstaller --onefile --noconsole --name kabucast --icon dist/kabucast.ico --add-data "dist/kabucast-offline.html;." --distpath dist --workpath build/pyinstaller tools/kabucast_launcher.py
 ```
 
 The screenshots above were taken from the real interface with headless Chrome
