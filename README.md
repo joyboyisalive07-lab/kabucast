@@ -8,14 +8,14 @@ buy price and whatever half-day prices you have. It gives you the probability of
 each price pattern, the range each remaining half-day can still take, and a
 decision about when to sell.
 
-**[Open it](https://joyboyisalive07-lab.github.io/kabucast/)** ·
+**[Open it](https://joyboyisalive07-lab.github.io/kabucast/#l=en)** ·
 [Русская версия этого файла](README.ru.md)
 
 ![The interface with five prices entered](docs/img/screenshot.png)
 
 ## Try this first
 
-Open [this link](https://joyboyisalive07-lab.github.io/kabucast/#b=100&p=88.84.80.76.72.71).
+Open [this link](https://joyboyisalive07-lab.github.io/kabucast/#b=100&p=88.84.80.76.72.71&l=en).
 Sunday 100, then 88, 84, 80, 76, 72, 71.
 
 kabucast says the prices cannot happen. It is right. A fall from 72 to 71 is a

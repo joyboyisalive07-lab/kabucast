@@ -67,6 +67,9 @@ export const RU: Strings = {
   inconsistentHeading: "Таких цен не бывает",
   inconsistentBody:
     "Ни один паттерн в игре не даёт такую последовательность, считать нечего. Проверьте введённые числа.",
+  inconsistentSlot:
+    "Цена за {slot} не может следовать за предыдущими.",
+  inconsistentClear: "Очистить {slot}",
   invalidPrice: "Целое число от 1 до 999",
   invalidBasePrice: "Целое число от 90 до 110",
 };

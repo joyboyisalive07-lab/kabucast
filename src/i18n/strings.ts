@@ -73,6 +73,9 @@ export interface Strings {
 
   readonly inconsistentHeading: string;
   readonly inconsistentBody: string;
+  /** Names the earliest price the data rules out. */
+  readonly inconsistentSlot: string;
+  readonly inconsistentClear: string;
   readonly invalidPrice: string;
   readonly invalidBasePrice: string;
 }
@@ -145,6 +148,9 @@ export const EN: Strings = {
   inconsistentHeading: "These prices cannot happen",
   inconsistentBody:
     "No pattern in the game produces this sequence, so there is nothing to compute. Check the numbers you typed.",
+  inconsistentSlot:
+    "The price at {slot} cannot follow the ones before it.",
+  inconsistentClear: "Clear {slot}",
   invalidPrice: "Whole number between 1 and 999",
   invalidBasePrice: "Whole number between 90 and 110",
 };

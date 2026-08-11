@@ -14,6 +14,10 @@ declare module "node:fs" {
   export function writeFileSync(path: string, data: string | Uint8Array): void;
   export function readFileSync(path: string, encoding: "utf8"): string;
   export function mkdirSync(path: string, options: { readonly recursive: boolean }): void;
+  export function rmSync(
+    path: string,
+    options: { readonly recursive: boolean; readonly force: boolean },
+  ): void;
 }
 
 declare module "node:zlib" {

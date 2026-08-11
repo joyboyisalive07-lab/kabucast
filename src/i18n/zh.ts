@@ -66,6 +66,9 @@ export const ZH: Strings = {
 
   inconsistentHeading: "这些价格不可能出现",
   inconsistentBody: "游戏里没有任何类型会产生这个序列，因此无从计算。请检查输入的数字。",
+  inconsistentSlot:
+    "{slot} 的价格无法接在之前的价格之后。",
+  inconsistentClear: "清除 {slot}",
   invalidPrice: "1 到 999 之间的整数",
   invalidBasePrice: "90 到 110 之间的整数",
 };

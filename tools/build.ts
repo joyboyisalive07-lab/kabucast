@@ -6,17 +6,22 @@
  * it is the same script and the same stylesheet with the two link elements
  * replaced by their contents, so the two artifacts cannot drift apart.
  *
+ * The hosted assets carry a content hash in their names. That is what lets the
+ * service worker treat them as immutable and fetch the page itself
+ * network-first, so a deployment is picked up on the next load instead of the
+ * one after it, and a fresh page can never be paired with a stale script.
+ *
  * Run with: node tools/build.ts
  */
 
 import { createHash } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import process from "node:process";
 import * as esbuild from "esbuild";
 import { writeIcons } from "./icon.ts";
 
 const OUTPUT_DIRECTORY = "dist";
-const CACHE_VERSION_LENGTH = 12;
+const HASH_LENGTH = 12;
 
 const STYLE_LINK = '<link rel="stylesheet" href="./styles.css" />';
 const SCRIPT_TAG = '<script type="module" src="./main.js"></script>';
@@ -72,6 +77,14 @@ async function bundle(entry: string, define: Readonly<Record<string, string>>): 
   return result.outputFiles?.[0]?.text ?? "";
 }
 
+function digest(...parts: readonly string[]): string {
+  const hash = createHash("sha256");
+  for (const part of parts) {
+    hash.update(part);
+  }
+  return hash.digest("hex").slice(0, HASH_LENGTH);
+}
+
 /**
  * A script element ends at the first `</script` in the source, whatever it is
  * quoted inside, so the sequence is broken up before inlining.
@@ -81,6 +94,10 @@ function inlineSafe(script: string): string {
 }
 
 async function build(): Promise<void> {
+  // Emptied first: asset names carry a content hash, so a stale one left behind
+  // would be deployed alongside the new one and served to anyone still holding
+  // a reference to it.
+  rmSync(OUTPUT_DIRECTORY, { recursive: true, force: true });
   mkdirSync(OUTPUT_DIRECTORY, { recursive: true });
 
   const icons = writeIcons();
@@ -88,31 +105,31 @@ async function build(): Promise<void> {
   const styles = readFileSync("src/ui/styles.css", "utf8");
   const page = readFileSync("src/ui/index.html", "utf8");
 
-  const version = createHash("sha256")
-    .update(script)
-    .update(styles)
-    .update(page)
-    .digest("hex")
-    .slice(0, CACHE_VERSION_LENGTH);
-
-  const serviceWorker = await bundle("src/ui/service-worker.ts", {
-    __CACHE_VERSION__: JSON.stringify(version),
-  });
-
-  writeFileSync(`${OUTPUT_DIRECTORY}/main.js`, script);
-  writeFileSync(`${OUTPUT_DIRECTORY}/styles.css`, styles);
-  writeFileSync(`${OUTPUT_DIRECTORY}/index.html`, page);
-  writeFileSync(`${OUTPUT_DIRECTORY}/service-worker.js`, serviceWorker);
-  writeFileSync(
-    `${OUTPUT_DIRECTORY}/manifest.webmanifest`,
-    `${JSON.stringify(MANIFEST, null, 2)}\n`,
-  );
-
   for (const marker of [STYLE_LINK, SCRIPT_TAG, ICON_LINKS]) {
     if (!page.includes(marker)) {
-      throw new Error(`index.html no longer carries a tag the offline build replaces: ${marker}`);
+      throw new Error(`index.html no longer carries a tag the build replaces: ${marker}`);
     }
   }
+
+  const scriptName = `main.${digest(script)}.js`;
+  const styleName = `styles.${digest(styles)}.css`;
+  const manifest = `${JSON.stringify(MANIFEST, null, 2)}\n`;
+
+  const hosted = page
+    .replace(STYLE_LINK, `<link rel="stylesheet" href="./${styleName}" />`)
+    .replace(SCRIPT_TAG, `<script type="module" src="./${scriptName}"></script>`);
+
+  const serviceWorker = await bundle("src/ui/service-worker.ts", {
+    __CACHE_VERSION__: JSON.stringify(digest(script, styles, hosted, manifest)),
+    __IMMUTABLE_ASSETS__: JSON.stringify([`./${scriptName}`, `./${styleName}`]),
+  });
+
+  writeFileSync(`${OUTPUT_DIRECTORY}/${scriptName}`, script);
+  writeFileSync(`${OUTPUT_DIRECTORY}/${styleName}`, styles);
+  writeFileSync(`${OUTPUT_DIRECTORY}/index.html`, hosted);
+  writeFileSync(`${OUTPUT_DIRECTORY}/service-worker.js`, serviceWorker);
+  writeFileSync(`${OUTPUT_DIRECTORY}/manifest.webmanifest`, manifest);
+
   const inlineIcon = `data:image/svg+xml,${encodeURIComponent(icons.svg)}`;
   const offline = page
     .replace(ICON_LINKS, `<link rel="icon" href="${inlineIcon}" type="image/svg+xml" />`)
@@ -121,8 +138,8 @@ async function build(): Promise<void> {
   writeFileSync(`${OUTPUT_DIRECTORY}/kabucast-offline.html`, offline);
 
   process.stdout.write(
-    `dist/ built, cache ${version}, script ${script.length} bytes, ` +
-      `icon ${icons.icoBytes} bytes, offline file ${offline.length} bytes\n`,
+    `dist/ built: ${scriptName}, ${styleName}, icon ${icons.icoBytes} bytes, ` +
+      `offline file ${offline.length} bytes\n`,
   );
 }
 

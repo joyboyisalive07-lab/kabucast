@@ -592,3 +592,43 @@ has no reason to be looking at twelve empty fields. The forecast is scrolled up
 after two frames, once the chart has taken its height, and only when it is off
 screen. A page opened empty is left alone, and if the frames never arrive the
 page simply stays where it was.
+
+### D-042 An impossible week names the price that broke it
+
+Saying "these prices cannot happen" and stopping leaves the reader to find the
+mistake by eye across twelve fields. The prices are fed in one at a time and the
+first prefix with no surviving scenario names the earliest slot that cannot
+follow what came before it; that field is outlined and the page offers to clear
+it.
+
+The offer is to clear rather than to correct, because the earliest ruled-out
+slot is not necessarily the mistyped one. In 88, 84, 80, 76, 72, 71 the
+inference stops at the 71, but the typo could as easily have been the 72.
+Claiming to know which was meant would be inventing information.
+
+### D-043 Assets carry a content hash and the page is fetched network-first
+
+The service worker was cache-first for everything. That is correct for offline
+use and wrong on the visit after a deployment: the reader saw the previous
+version once, and only the visit after that got the new one. It is how a stale
+interface reaches someone who followed a link from the documentation.
+
+The script and the stylesheet now carry a content hash in their names, which
+makes them immutable — a URL can only ever mean one file — so they are served
+from the cache without asking. The page itself is fetched from the network and
+falls back to the cache, so a deployment lands on the next load and a fresh page
+can never be paired with a stale script. `dist/` is emptied before every build,
+because a hashed file left behind would be deployed and served to anyone still
+holding a reference to it.
+
+### D-044 A documentation link carries its own language
+
+D-029 kept the language out of the permalink so that a link a player sends
+arrives in the reader's language. That is right for a shared link and wrong for
+a link written inside an English document, which opened in Russian for a Russian
+browser.
+
+An `l=` in the hash now wins over browser detection, and the English and Russian
+readmes use their own. The copy button still never writes one, and choosing a
+language from the menu clears it, so a deliberate choice outranks what a link
+asked for.

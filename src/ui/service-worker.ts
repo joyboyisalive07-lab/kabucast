@@ -1,10 +1,12 @@
 /**
  * Offline support for the hosted build.
  *
- * The shell is cached on install and served from the cache first, with a
- * background refresh, so the tool opens on a phone with no signal and picks up
- * a new version on the next visit with one. Nothing is computed on a server, so
- * there is nothing else to cache.
+ * The page itself is fetched from the network first and falls back to the
+ * cache, so a deployment is picked up on the next load rather than the one
+ * after it. The script and the stylesheet carry a content hash in their names,
+ * which makes them immutable: a given URL can only ever mean one file, so they
+ * are served from the cache without asking, and a fresh page can never be
+ * paired with a stale script.
  *
  * The service worker globals are declared here rather than by switching the
  * whole project to the web worker library, which would take the DOM types away
@@ -12,6 +14,7 @@
  */
 
 declare const __CACHE_VERSION__: string;
+declare const __IMMUTABLE_ASSETS__: readonly string[];
 
 interface ExtendableEventLike {
   waitUntil(promise: Promise<unknown>): void;
@@ -33,14 +36,14 @@ interface ServiceWorkerScope {
 const scope = globalThis as unknown as ServiceWorkerScope;
 
 const CACHE_NAME = `kabucast-${__CACHE_VERSION__}`;
+const PAGE = "./index.html";
 const SHELL = [
   "./",
-  "./index.html",
-  "./main.js",
-  "./styles.css",
+  PAGE,
+  "./manifest.webmanifest",
   "./icon.svg",
   "./icon-32.png",
-  "./manifest.webmanifest",
+  ...__IMMUTABLE_ASSETS__,
 ];
 
 scope.addEventListener("install", (event) => {
@@ -72,28 +75,38 @@ scope.addEventListener("fetch", (event) => {
     return;
   }
 
+  const isPage = request.mode === "navigate";
+
   event.respondWith(
     (async (): Promise<Response> => {
       const cache = await caches.open(CACHE_NAME);
-      const cached = await cache.match(request);
-      const network = fetch(request)
-        .then(async (response) => {
-          if (response.ok) {
-            await cache.put(request, response.clone());
-          }
-          return response;
-        })
-        .catch(() => undefined);
 
+      if (isPage) {
+        try {
+          const fresh = await fetch(request);
+          if (fresh.ok) {
+            await cache.put(PAGE, fresh.clone());
+          }
+          return fresh;
+        } catch {
+          const cached = await cache.match(PAGE);
+          return cached ?? new Response("offline", { status: 503 });
+        }
+      }
+
+      const cached = await cache.match(request);
       if (cached !== undefined) {
         return cached;
       }
-      const fresh = await network;
-      if (fresh !== undefined) {
+      try {
+        const fresh = await fetch(request);
+        if (fresh.ok) {
+          await cache.put(request, fresh.clone());
+        }
         return fresh;
+      } catch {
+        return new Response("offline", { status: 503 });
       }
-      const fallback = await cache.match("./index.html");
-      return fallback ?? new Response("offline", { status: 503 });
     })(),
   );
 });

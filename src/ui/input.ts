@@ -256,6 +256,24 @@ export class InputPanel {
     this.validateAndEmit();
   }
 
+  /** Empties one half-day and recomputes, for the offer made on an impossible week. */
+  clearSlot(slot: number): void {
+    const input = this.priceInputs[slot];
+    if (input === undefined) {
+      return;
+    }
+    input.value = "";
+    this.validateAndEmit();
+    input.focus();
+  }
+
+  /** Marks the price the inference says cannot follow the ones before it. */
+  flagSlot(slot: number | null): void {
+    for (let index = 0; index < this.priceInputs.length; index += 1) {
+      at(this.priceInputs, index).classList.toggle("culprit", index === slot);
+    }
+  }
+
   private clear(): void {
     this.baseInput.value = "";
     this.firstBuyInput.checked = false;

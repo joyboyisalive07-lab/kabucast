@@ -210,6 +210,17 @@ input.invalid {
   border-color: var(--invalid);
 }
 
+/* The price the inference says cannot follow the ones before it. Distinct from
+   .invalid, which is a value the field itself will not take. */
+input.culprit {
+  border-color: var(--invalid);
+  box-shadow: inset 0 0 0 1px var(--invalid);
+}
+
+.culprit-line {
+  margin-bottom: 10px;
+}
+
 .toggle {
   display: grid;
   grid-template-columns: auto 1fr;

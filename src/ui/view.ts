@@ -229,14 +229,43 @@ export function renderScenarios(host: HTMLElement, posterior: Posterior, strings
   }
 }
 
-export function renderInconsistent(host: HTMLElement, strings: Strings): void {
+/**
+ * `culprit` is the earliest slot the data rules out, which is the one worth
+ * naming. It is not necessarily the mistyped one, so the offer is to clear that
+ * price rather than to correct it.
+ */
+export function renderInconsistent(
+  host: HTMLElement,
+  strings: Strings,
+  culprit: number | null,
+  onClear: (slot: number) => void,
+): void {
   host.replaceChildren();
+
   const heading = document.createElement("p");
   heading.className = "verdict";
   heading.dataset["action"] = "invalid";
   heading.textContent = strings.inconsistentHeading;
+
   const body = document.createElement("p");
   body.className = "verdict-detail";
   body.textContent = strings.inconsistentBody;
   host.append(heading, body);
+
+  if (culprit === null) {
+    return;
+  }
+
+  const label = shortLabel(culprit, strings);
+  const named = document.createElement("p");
+  named.className = "verdict-detail culprit-line";
+  named.textContent = fill(strings.inconsistentSlot, { slot: label });
+
+  const clear = document.createElement("button");
+  clear.type = "button";
+  clear.className = "secondary";
+  clear.textContent = fill(strings.inconsistentClear, { slot: label });
+  clear.addEventListener("click", () => onClear(culprit));
+
+  host.append(named, clear);
 }

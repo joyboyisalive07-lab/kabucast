@@ -10,6 +10,7 @@
 import { at } from "../model/array.ts";
 import { SELLING_SLOT_COUNT } from "../model/constants.ts";
 import { priceBoundsPerSlot } from "../infer/bounds.ts";
+import { firstImpossibleSlot } from "../infer/inconsistency.ts";
 import { computePosterior } from "../infer/posterior.ts";
 import type { Observations } from "../infer/likelihood.ts";
 import { recommend } from "../decide/stopping.ts";
@@ -29,6 +30,19 @@ const COPIED_FEEDBACK_MS = 1600;
 /** Enough of the forecast on screen to count as already visible. */
 const MINIMUM_VISIBLE_FORECAST = 160;
 const SHARED_LINK_MARGIN = 12;
+
+/**
+ * A link written in a document should open in the language of that document,
+ * so an `l=` in the hash wins over the browser's preference. The copy button
+ * never writes one: a link a player sends a friend should arrive in the
+ * friend's language, not the sender's.
+ */
+function languageFromHash(): LanguageCode | null {
+  const requested = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("l");
+  return requested !== null && LANGUAGES.has(requested as LanguageCode)
+    ? (requested as LanguageCode)
+    : null;
+}
 
 function element(id: string): HTMLElement {
   const node = document.getElementById(id);
@@ -93,6 +107,8 @@ function buildChartData(
 class Application {
   private strings: Strings;
   private language: LanguageCode;
+  /** Set when a link asked for a language; kept in the URL so a reload holds. */
+  private forcedLanguage: LanguageCode | null;
   private readonly chart: Chart;
   private readonly panel: InputPanel;
   private frame: ReturnType<typeof setTimeout> | 0 = 0;
@@ -108,7 +124,8 @@ class Application {
   private readonly copyButton = element("copy-link") as HTMLButtonElement;
 
   constructor() {
-    this.language = detectLanguage();
+    this.forcedLanguage = languageFromHash();
+    this.language = this.forcedLanguage ?? detectLanguage();
     this.strings = stringsFor(this.language);
     this.chart = new Chart(element("chart"), element("readout"), this.strings);
     this.panel = new InputPanel(element("inputs"), this.strings, () => this.schedule());
@@ -160,6 +177,8 @@ class Application {
       const chosen = this.languageSelect.value as LanguageCode;
       this.language = chosen;
       this.strings = stringsFor(chosen);
+      // A deliberate choice outranks the one the link asked for.
+      this.forcedLanguage = null;
       rememberLanguage(chosen);
       document.documentElement.lang = chosen;
       this.panel.setStrings(this.strings);
@@ -205,8 +224,11 @@ class Application {
 
   private applyHash(): void {
     const encoded = window.location.hash.replace(/^#/, "");
-    if (encoded !== "" && encoded !== encodeState(this.panel.read())) {
-      this.panel.write(decodeState(encoded));
+    // The language marker is not part of the input, so it must not make an
+    // unchanged hash look changed and overwrite what is in the fields.
+    const withoutLanguage = encoded.replace(/(^|&)l=[^&]*/, "").replace(/^&/, "");
+    if (withoutLanguage !== "" && withoutLanguage !== encodeState(this.panel.read())) {
+      this.panel.write(decodeState(withoutLanguage));
     }
     this.recompute();
   }
@@ -247,8 +269,12 @@ class Application {
     const state = this.panel.read();
 
     const encoded = encodeState(state);
-    const target = encoded === "" ? window.location.pathname : `#${encoded}`;
-    if (window.location.hash.replace(/^#/, "") !== encoded) {
+    const withLanguage =
+      this.forcedLanguage === null
+        ? encoded
+        : `${encoded === "" ? "" : `${encoded}&`}l=${this.forcedLanguage}`;
+    const target = withLanguage === "" ? window.location.pathname : `#${withLanguage}`;
+    if (window.location.hash.replace(/^#/, "") !== withLanguage) {
       window.history.replaceState(null, "", target);
     }
 
@@ -263,10 +289,20 @@ class Application {
       this.chartSection.hidden = true;
       this.patternSection.hidden = true;
       this.scenarioSection.hidden = true;
-      renderInconsistent(this.decisionHost, this.strings);
+      const culprit = firstImpossibleSlot({
+        basePrice: state.basePrice,
+        observations: state.prices,
+        previousPattern: state.previousPattern,
+        firstBuy: state.firstBuy,
+      });
+      this.panel.flagSlot(culprit);
+      renderInconsistent(this.decisionHost, this.strings, culprit, (slot) =>
+        this.panel.clearSlot(slot),
+      );
       return;
     }
 
+    this.panel.flagSlot(null);
     this.chartSection.hidden = false;
     this.patternSection.hidden = false;
     this.scenarioSection.hidden = false;

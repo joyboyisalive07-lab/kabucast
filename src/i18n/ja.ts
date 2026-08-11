@@ -67,6 +67,9 @@ export const JA: Strings = {
   inconsistentHeading: "この価格は起こりえません",
   inconsistentBody:
     "ゲームのどの型もこの並びを生みません。計算するものがないので、入力した数字を確認してください。",
+  inconsistentSlot:
+    "{slot}の価格は、その前の価格に続きません。",
+  inconsistentClear: "{slot}を消去",
   invalidPrice: "1から999までの整数",
   invalidBasePrice: "90から110までの整数",
 };

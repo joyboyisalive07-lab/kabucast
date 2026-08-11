@@ -67,6 +67,9 @@ export const ES: Strings = {
   inconsistentHeading: "Estos precios no pueden darse",
   inconsistentBody:
     "Ningún patrón del juego produce esta secuencia, así que no hay nada que calcular. Revisa los números.",
+  inconsistentSlot:
+    "El precio del {slot} no puede seguir a los anteriores.",
+  inconsistentClear: "Borrar {slot}",
   invalidPrice: "Número entero entre 1 y 999",
   invalidBasePrice: "Número entero entre 90 y 110",
 };

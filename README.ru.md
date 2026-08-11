@@ -8,14 +8,14 @@
 вероятность каждого паттерна цен, диапазон, который ещё может принять каждый
 оставшийся полдень, и решение о том, когда продавать.
 
-**[Открыть](https://joyboyisalive07-lab.github.io/kabucast/)** ·
+**[Открыть](https://joyboyisalive07-lab.github.io/kabucast/#l=ru)** ·
 [English version of this file](README.md)
 
 ![Интерфейс с пятью введёнными ценами](docs/img/screenshot.ru.png)
 
 ## Начните с этого
 
-Откройте [эту ссылку](https://joyboyisalive07-lab.github.io/kabucast/#b=100&p=88.84.80.76.72.71).
+Откройте [эту ссылку](https://joyboyisalive07-lab.github.io/kabucast/#b=100&p=88.84.80.76.72.71&l=ru).
 Воскресенье 100, дальше 88, 84, 80, 76, 72, 71.
 
 kabucast говорит, что таких цен не бывает. И он прав. Падение с 72 до 71 — это
